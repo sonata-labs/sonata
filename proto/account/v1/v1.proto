@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package account.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/account/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service Account {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

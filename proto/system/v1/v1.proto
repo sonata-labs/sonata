@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package system.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/system/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service System {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

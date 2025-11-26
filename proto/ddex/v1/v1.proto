@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package ddex.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/ddex/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service Ddex {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

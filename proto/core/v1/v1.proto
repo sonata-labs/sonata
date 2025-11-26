@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package core.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/core/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service Core {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

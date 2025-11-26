@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package storage.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/storage/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service Storage {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

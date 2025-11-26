@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package p2p.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/p2p/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service P2p {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

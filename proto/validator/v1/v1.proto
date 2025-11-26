@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package validator.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/validator/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service Validator {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}

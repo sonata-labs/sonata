@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package store.app.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/store/app/v1";
+
+message PingRequest {}
+message PingResponse {}
+
+service Appstore {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+}
