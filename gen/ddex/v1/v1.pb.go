@@ -421,6 +421,73 @@ type PieMessage_V10 struct {
 
 func (*PieMessage_V10) isPieMessage_Msg() {}
 
+type PieRequestMessage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Msg:
+	//
+	//	*PieRequestMessage_V10
+	Msg isPieRequestMessage_Msg `protobuf_oneof:"msg"`
+}
+
+func (x *PieRequestMessage) Reset() {
+	*x = PieRequestMessage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ddex_v1_v1_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PieRequestMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PieRequestMessage) ProtoMessage() {}
+
+func (x *PieRequestMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_ddex_v1_v1_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PieRequestMessage.ProtoReflect.Descriptor instead.
+func (*PieRequestMessage) Descriptor() ([]byte, []int) {
+	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{4}
+}
+
+func (m *PieRequestMessage) GetMsg() isPieRequestMessage_Msg {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
+func (x *PieRequestMessage) GetV10() *v10.PieRequestMessage {
+	if x, ok := x.GetMsg().(*PieRequestMessage_V10); ok {
+		return x.V10
+	}
+	return nil
+}
+
+type isPieRequestMessage_Msg interface {
+	isPieRequestMessage_Msg()
+}
+
+type PieRequestMessage_V10 struct {
+	V10 *v10.PieRequestMessage `protobuf:"bytes,1,opt,name=v10,proto3,oneof"`
+}
+
+func (*PieRequestMessage_V10) isPieRequestMessage_Msg() {}
+
 type MeadMessage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -435,7 +502,7 @@ type MeadMessage struct {
 func (x *MeadMessage) Reset() {
 	*x = MeadMessage{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ddex_v1_v1_proto_msgTypes[4]
+		mi := &file_ddex_v1_v1_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -448,7 +515,7 @@ func (x *MeadMessage) String() string {
 func (*MeadMessage) ProtoMessage() {}
 
 func (x *MeadMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_ddex_v1_v1_proto_msgTypes[4]
+	mi := &file_ddex_v1_v1_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -461,7 +528,7 @@ func (x *MeadMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MeadMessage.ProtoReflect.Descriptor instead.
 func (*MeadMessage) Descriptor() ([]byte, []int) {
-	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{4}
+	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{5}
 }
 
 func (m *MeadMessage) GetMsg() isMeadMessage_Msg {
@@ -555,15 +622,20 @@ var file_ddex_v1_v1_proto_rawDesc = []byte{
 	0x67, 0x65, 0x12, 0x2c, 0x0a, 0x03, 0x76, 0x31, 0x30, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
 	0x18, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x70, 0x69, 0x65, 0x2e, 0x76, 0x31, 0x30, 0x2e, 0x50,
 	0x69, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x03, 0x76, 0x31, 0x30,
-	0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x22, 0x44, 0x0a, 0x0b, 0x4d, 0x65, 0x61, 0x64, 0x4d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x2e, 0x0a, 0x03, 0x76, 0x31, 0x31, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x6d, 0x65, 0x61, 0x64, 0x2e,
-	0x76, 0x31, 0x31, 0x2e, 0x4d, 0x65, 0x61, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48,
-	0x00, 0x52, 0x03, 0x76, 0x31, 0x31, 0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x42, 0x2b, 0x5a,
-	0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6f, 0x6e, 0x61,
-	0x74, 0x61, 0x2d, 0x6c, 0x61, 0x62, 0x73, 0x2f, 0x73, 0x6f, 0x6e, 0x61, 0x74, 0x61, 0x2f, 0x67,
-	0x65, 0x6e, 0x2f, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x22, 0x4f, 0x0a, 0x11, 0x50, 0x69, 0x65, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x33, 0x0a, 0x03,
+	0x76, 0x31, 0x30, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x64, 0x64, 0x65, 0x78,
+	0x2e, 0x70, 0x69, 0x65, 0x2e, 0x76, 0x31, 0x30, 0x2e, 0x50, 0x69, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x03, 0x76, 0x31,
+	0x30, 0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x22, 0x44, 0x0a, 0x0b, 0x4d, 0x65, 0x61, 0x64,
+	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x2e, 0x0a, 0x03, 0x76, 0x31, 0x31, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x6d, 0x65, 0x61, 0x64,
+	0x2e, 0x76, 0x31, 0x31, 0x2e, 0x4d, 0x65, 0x61, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x48, 0x00, 0x52, 0x03, 0x76, 0x31, 0x31, 0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x42, 0x2b,
+	0x5a, 0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6f, 0x6e,
+	0x61, 0x74, 0x61, 0x2d, 0x6c, 0x61, 0x62, 0x73, 0x2f, 0x73, 0x6f, 0x6e, 0x61, 0x74, 0x61, 0x2f,
+	0x67, 0x65, 0x6e, 0x2f, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -578,48 +650,51 @@ func file_ddex_v1_v1_proto_rawDescGZIP() []byte {
 	return file_ddex_v1_v1_proto_rawDescData
 }
 
-var file_ddex_v1_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_ddex_v1_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_ddex_v1_v1_proto_goTypes = []interface{}{
 	(*NewReleaseMessage)(nil),        // 0: ddex.v1.NewReleaseMessage
 	(*CatalogListMessage)(nil),       // 1: ddex.v1.CatalogListMessage
 	(*PurgeReleaseMessage)(nil),      // 2: ddex.v1.PurgeReleaseMessage
 	(*PieMessage)(nil),               // 3: ddex.v1.PieMessage
-	(*MeadMessage)(nil),              // 4: ddex.v1.MeadMessage
-	(*v381.NewReleaseMessage)(nil),   // 5: ddex.ern.v381.NewReleaseMessage
-	(*v383.NewReleaseMessage)(nil),   // 6: ddex.ern.v383.NewReleaseMessage
-	(*v42.NewReleaseMessage)(nil),    // 7: ddex.ern.v42.NewReleaseMessage
-	(*v43.NewReleaseMessage)(nil),    // 8: ddex.ern.v43.NewReleaseMessage
-	(*v432.NewReleaseMessage)(nil),   // 9: ddex.ern.v432.NewReleaseMessage
-	(*v381.CatalogListMessage)(nil),  // 10: ddex.ern.v381.CatalogListMessage
-	(*v383.CatalogListMessage)(nil),  // 11: ddex.ern.v383.CatalogListMessage
-	(*v381.PurgeReleaseMessage)(nil), // 12: ddex.ern.v381.PurgeReleaseMessage
-	(*v383.PurgeReleaseMessage)(nil), // 13: ddex.ern.v383.PurgeReleaseMessage
-	(*v42.PurgeReleaseMessage)(nil),  // 14: ddex.ern.v42.PurgeReleaseMessage
-	(*v43.PurgeReleaseMessage)(nil),  // 15: ddex.ern.v43.PurgeReleaseMessage
-	(*v432.PurgeReleaseMessage)(nil), // 16: ddex.ern.v432.PurgeReleaseMessage
-	(*v10.PieMessage)(nil),           // 17: ddex.pie.v10.PieMessage
-	(*v11.MeadMessage)(nil),          // 18: ddex.mead.v11.MeadMessage
+	(*PieRequestMessage)(nil),        // 4: ddex.v1.PieRequestMessage
+	(*MeadMessage)(nil),              // 5: ddex.v1.MeadMessage
+	(*v381.NewReleaseMessage)(nil),   // 6: ddex.ern.v381.NewReleaseMessage
+	(*v383.NewReleaseMessage)(nil),   // 7: ddex.ern.v383.NewReleaseMessage
+	(*v42.NewReleaseMessage)(nil),    // 8: ddex.ern.v42.NewReleaseMessage
+	(*v43.NewReleaseMessage)(nil),    // 9: ddex.ern.v43.NewReleaseMessage
+	(*v432.NewReleaseMessage)(nil),   // 10: ddex.ern.v432.NewReleaseMessage
+	(*v381.CatalogListMessage)(nil),  // 11: ddex.ern.v381.CatalogListMessage
+	(*v383.CatalogListMessage)(nil),  // 12: ddex.ern.v383.CatalogListMessage
+	(*v381.PurgeReleaseMessage)(nil), // 13: ddex.ern.v381.PurgeReleaseMessage
+	(*v383.PurgeReleaseMessage)(nil), // 14: ddex.ern.v383.PurgeReleaseMessage
+	(*v42.PurgeReleaseMessage)(nil),  // 15: ddex.ern.v42.PurgeReleaseMessage
+	(*v43.PurgeReleaseMessage)(nil),  // 16: ddex.ern.v43.PurgeReleaseMessage
+	(*v432.PurgeReleaseMessage)(nil), // 17: ddex.ern.v432.PurgeReleaseMessage
+	(*v10.PieMessage)(nil),           // 18: ddex.pie.v10.PieMessage
+	(*v10.PieRequestMessage)(nil),    // 19: ddex.pie.v10.PieRequestMessage
+	(*v11.MeadMessage)(nil),          // 20: ddex.mead.v11.MeadMessage
 }
 var file_ddex_v1_v1_proto_depIdxs = []int32{
-	5,  // 0: ddex.v1.NewReleaseMessage.v381:type_name -> ddex.ern.v381.NewReleaseMessage
-	6,  // 1: ddex.v1.NewReleaseMessage.v383:type_name -> ddex.ern.v383.NewReleaseMessage
-	7,  // 2: ddex.v1.NewReleaseMessage.v42:type_name -> ddex.ern.v42.NewReleaseMessage
-	8,  // 3: ddex.v1.NewReleaseMessage.v43:type_name -> ddex.ern.v43.NewReleaseMessage
-	9,  // 4: ddex.v1.NewReleaseMessage.v432:type_name -> ddex.ern.v432.NewReleaseMessage
-	10, // 5: ddex.v1.CatalogListMessage.v381:type_name -> ddex.ern.v381.CatalogListMessage
-	11, // 6: ddex.v1.CatalogListMessage.v383:type_name -> ddex.ern.v383.CatalogListMessage
-	12, // 7: ddex.v1.PurgeReleaseMessage.v381:type_name -> ddex.ern.v381.PurgeReleaseMessage
-	13, // 8: ddex.v1.PurgeReleaseMessage.v383:type_name -> ddex.ern.v383.PurgeReleaseMessage
-	14, // 9: ddex.v1.PurgeReleaseMessage.v42:type_name -> ddex.ern.v42.PurgeReleaseMessage
-	15, // 10: ddex.v1.PurgeReleaseMessage.v43:type_name -> ddex.ern.v43.PurgeReleaseMessage
-	16, // 11: ddex.v1.PurgeReleaseMessage.v432:type_name -> ddex.ern.v432.PurgeReleaseMessage
-	17, // 12: ddex.v1.PieMessage.v10:type_name -> ddex.pie.v10.PieMessage
-	18, // 13: ddex.v1.MeadMessage.v11:type_name -> ddex.mead.v11.MeadMessage
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	6,  // 0: ddex.v1.NewReleaseMessage.v381:type_name -> ddex.ern.v381.NewReleaseMessage
+	7,  // 1: ddex.v1.NewReleaseMessage.v383:type_name -> ddex.ern.v383.NewReleaseMessage
+	8,  // 2: ddex.v1.NewReleaseMessage.v42:type_name -> ddex.ern.v42.NewReleaseMessage
+	9,  // 3: ddex.v1.NewReleaseMessage.v43:type_name -> ddex.ern.v43.NewReleaseMessage
+	10, // 4: ddex.v1.NewReleaseMessage.v432:type_name -> ddex.ern.v432.NewReleaseMessage
+	11, // 5: ddex.v1.CatalogListMessage.v381:type_name -> ddex.ern.v381.CatalogListMessage
+	12, // 6: ddex.v1.CatalogListMessage.v383:type_name -> ddex.ern.v383.CatalogListMessage
+	13, // 7: ddex.v1.PurgeReleaseMessage.v381:type_name -> ddex.ern.v381.PurgeReleaseMessage
+	14, // 8: ddex.v1.PurgeReleaseMessage.v383:type_name -> ddex.ern.v383.PurgeReleaseMessage
+	15, // 9: ddex.v1.PurgeReleaseMessage.v42:type_name -> ddex.ern.v42.PurgeReleaseMessage
+	16, // 10: ddex.v1.PurgeReleaseMessage.v43:type_name -> ddex.ern.v43.PurgeReleaseMessage
+	17, // 11: ddex.v1.PurgeReleaseMessage.v432:type_name -> ddex.ern.v432.PurgeReleaseMessage
+	18, // 12: ddex.v1.PieMessage.v10:type_name -> ddex.pie.v10.PieMessage
+	19, // 13: ddex.v1.PieRequestMessage.v10:type_name -> ddex.pie.v10.PieRequestMessage
+	20, // 14: ddex.v1.MeadMessage.v11:type_name -> ddex.mead.v11.MeadMessage
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_ddex_v1_v1_proto_init() }
@@ -677,6 +752,18 @@ func file_ddex_v1_v1_proto_init() {
 			}
 		}
 		file_ddex_v1_v1_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PieRequestMessage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ddex_v1_v1_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MeadMessage); i {
 			case 0:
 				return &v.state
@@ -711,6 +798,9 @@ func file_ddex_v1_v1_proto_init() {
 		(*PieMessage_V10)(nil),
 	}
 	file_ddex_v1_v1_proto_msgTypes[4].OneofWrappers = []interface{}{
+		(*PieRequestMessage_V10)(nil),
+	}
+	file_ddex_v1_v1_proto_msgTypes[5].OneofWrappers = []interface{}{
 		(*MeadMessage_V11)(nil),
 	}
 	type x struct{}
@@ -719,7 +809,7 @@ func file_ddex_v1_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ddex_v1_v1_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

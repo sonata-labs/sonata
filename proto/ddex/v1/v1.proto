@@ -45,6 +45,12 @@ message PieMessage {
   }
 }
 
+message PieRequestMessage {
+  oneof msg {
+    ddex.pie.v10.PieRequestMessage v10 = 1;
+  }
+}
+
 message MeadMessage {
   oneof msg {
     ddex.mead.v11.MeadMessage v11 = 1;
