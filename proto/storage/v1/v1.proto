@@ -4,9 +4,16 @@ package storage.v1;
 
 option go_package = "github.com/sonata-labs/sonata/gen/storage/v1";
 
-message PingRequest {}
-message PingResponse {}
+message AudioFile {
+  string file_name = 1;
+  string size = 2;
+  string cid = 3;
+  string mime_type = 4;
+}
 
-service Storage {
-  rpc Ping(PingRequest) returns (PingResponse) {}
+message ImageFile {
+  string file_name = 1;
+  string size = 2;
+  string cid = 3;
+  string mime_type = 4;
 }

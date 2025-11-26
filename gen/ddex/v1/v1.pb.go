@@ -7,6 +7,13 @@
 package v1
 
 import (
+	v381 "github.com/sonata-labs/ddex-proto/gen/ddex/ern/v381"
+	v383 "github.com/sonata-labs/ddex-proto/gen/ddex/ern/v383"
+	v42 "github.com/sonata-labs/ddex-proto/gen/ddex/ern/v42"
+	v43 "github.com/sonata-labs/ddex-proto/gen/ddex/ern/v43"
+	v432 "github.com/sonata-labs/ddex-proto/gen/ddex/ern/v432"
+	v11 "github.com/sonata-labs/ddex-proto/gen/ddex/mead/v11"
+	v10 "github.com/sonata-labs/ddex-proto/gen/ddex/pie/v10"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -20,14 +27,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type PingRequest struct {
+type NewReleaseMessage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Msg:
+	//
+	//	*NewReleaseMessage_V381
+	//	*NewReleaseMessage_V383
+	//	*NewReleaseMessage_V42
+	//	*NewReleaseMessage_V43
+	//	*NewReleaseMessage_V432
+	Msg isNewReleaseMessage_Msg `protobuf_oneof:"msg"`
 }
 
-func (x *PingRequest) Reset() {
-	*x = PingRequest{}
+func (x *NewReleaseMessage) Reset() {
+	*x = NewReleaseMessage{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ddex_v1_v1_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -35,13 +51,13 @@ func (x *PingRequest) Reset() {
 	}
 }
 
-func (x *PingRequest) String() string {
+func (x *NewReleaseMessage) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PingRequest) ProtoMessage() {}
+func (*NewReleaseMessage) ProtoMessage() {}
 
-func (x *PingRequest) ProtoReflect() protoreflect.Message {
+func (x *NewReleaseMessage) ProtoReflect() protoreflect.Message {
 	mi := &file_ddex_v1_v1_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -53,19 +69,101 @@ func (x *PingRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
-func (*PingRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use NewReleaseMessage.ProtoReflect.Descriptor instead.
+func (*NewReleaseMessage) Descriptor() ([]byte, []int) {
 	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{0}
 }
 
-type PingResponse struct {
+func (m *NewReleaseMessage) GetMsg() isNewReleaseMessage_Msg {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
+func (x *NewReleaseMessage) GetV381() *v381.NewReleaseMessage {
+	if x, ok := x.GetMsg().(*NewReleaseMessage_V381); ok {
+		return x.V381
+	}
+	return nil
+}
+
+func (x *NewReleaseMessage) GetV383() *v383.NewReleaseMessage {
+	if x, ok := x.GetMsg().(*NewReleaseMessage_V383); ok {
+		return x.V383
+	}
+	return nil
+}
+
+func (x *NewReleaseMessage) GetV42() *v42.NewReleaseMessage {
+	if x, ok := x.GetMsg().(*NewReleaseMessage_V42); ok {
+		return x.V42
+	}
+	return nil
+}
+
+func (x *NewReleaseMessage) GetV43() *v43.NewReleaseMessage {
+	if x, ok := x.GetMsg().(*NewReleaseMessage_V43); ok {
+		return x.V43
+	}
+	return nil
+}
+
+func (x *NewReleaseMessage) GetV432() *v432.NewReleaseMessage {
+	if x, ok := x.GetMsg().(*NewReleaseMessage_V432); ok {
+		return x.V432
+	}
+	return nil
+}
+
+type isNewReleaseMessage_Msg interface {
+	isNewReleaseMessage_Msg()
+}
+
+type NewReleaseMessage_V381 struct {
+	V381 *v381.NewReleaseMessage `protobuf:"bytes,1,opt,name=v381,proto3,oneof"`
+}
+
+type NewReleaseMessage_V383 struct {
+	V383 *v383.NewReleaseMessage `protobuf:"bytes,2,opt,name=v383,proto3,oneof"`
+}
+
+type NewReleaseMessage_V42 struct {
+	V42 *v42.NewReleaseMessage `protobuf:"bytes,3,opt,name=v42,proto3,oneof"`
+}
+
+type NewReleaseMessage_V43 struct {
+	V43 *v43.NewReleaseMessage `protobuf:"bytes,4,opt,name=v43,proto3,oneof"`
+}
+
+type NewReleaseMessage_V432 struct {
+	V432 *v432.NewReleaseMessage `protobuf:"bytes,5,opt,name=v432,proto3,oneof"`
+}
+
+func (*NewReleaseMessage_V381) isNewReleaseMessage_Msg() {}
+
+func (*NewReleaseMessage_V383) isNewReleaseMessage_Msg() {}
+
+func (*NewReleaseMessage_V42) isNewReleaseMessage_Msg() {}
+
+func (*NewReleaseMessage_V43) isNewReleaseMessage_Msg() {}
+
+func (*NewReleaseMessage_V432) isNewReleaseMessage_Msg() {}
+
+type CatalogListMessage struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Msg:
+	//
+	//	*CatalogListMessage_V381
+	//	*CatalogListMessage_V383
+	Msg isCatalogListMessage_Msg `protobuf_oneof:"msg"`
 }
 
-func (x *PingResponse) Reset() {
-	*x = PingResponse{}
+func (x *CatalogListMessage) Reset() {
+	*x = CatalogListMessage{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ddex_v1_v1_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -73,13 +171,13 @@ func (x *PingResponse) Reset() {
 	}
 }
 
-func (x *PingResponse) String() string {
+func (x *CatalogListMessage) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PingResponse) ProtoMessage() {}
+func (*CatalogListMessage) ProtoMessage() {}
 
-func (x *PingResponse) ProtoReflect() protoreflect.Message {
+func (x *CatalogListMessage) ProtoReflect() protoreflect.Message {
 	mi := &file_ddex_v1_v1_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -91,25 +189,381 @@ func (x *PingResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
-func (*PingResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CatalogListMessage.ProtoReflect.Descriptor instead.
+func (*CatalogListMessage) Descriptor() ([]byte, []int) {
 	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{1}
 }
+
+func (m *CatalogListMessage) GetMsg() isCatalogListMessage_Msg {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
+func (x *CatalogListMessage) GetV381() *v381.CatalogListMessage {
+	if x, ok := x.GetMsg().(*CatalogListMessage_V381); ok {
+		return x.V381
+	}
+	return nil
+}
+
+func (x *CatalogListMessage) GetV383() *v383.CatalogListMessage {
+	if x, ok := x.GetMsg().(*CatalogListMessage_V383); ok {
+		return x.V383
+	}
+	return nil
+}
+
+type isCatalogListMessage_Msg interface {
+	isCatalogListMessage_Msg()
+}
+
+type CatalogListMessage_V381 struct {
+	V381 *v381.CatalogListMessage `protobuf:"bytes,1,opt,name=v381,proto3,oneof"`
+}
+
+type CatalogListMessage_V383 struct {
+	V383 *v383.CatalogListMessage `protobuf:"bytes,2,opt,name=v383,proto3,oneof"`
+}
+
+func (*CatalogListMessage_V381) isCatalogListMessage_Msg() {}
+
+func (*CatalogListMessage_V383) isCatalogListMessage_Msg() {}
+
+type PurgeReleaseMessage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Msg:
+	//
+	//	*PurgeReleaseMessage_V381
+	//	*PurgeReleaseMessage_V383
+	//	*PurgeReleaseMessage_V42
+	//	*PurgeReleaseMessage_V43
+	//	*PurgeReleaseMessage_V432
+	Msg isPurgeReleaseMessage_Msg `protobuf_oneof:"msg"`
+}
+
+func (x *PurgeReleaseMessage) Reset() {
+	*x = PurgeReleaseMessage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ddex_v1_v1_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PurgeReleaseMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PurgeReleaseMessage) ProtoMessage() {}
+
+func (x *PurgeReleaseMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_ddex_v1_v1_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PurgeReleaseMessage.ProtoReflect.Descriptor instead.
+func (*PurgeReleaseMessage) Descriptor() ([]byte, []int) {
+	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{2}
+}
+
+func (m *PurgeReleaseMessage) GetMsg() isPurgeReleaseMessage_Msg {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
+func (x *PurgeReleaseMessage) GetV381() *v381.PurgeReleaseMessage {
+	if x, ok := x.GetMsg().(*PurgeReleaseMessage_V381); ok {
+		return x.V381
+	}
+	return nil
+}
+
+func (x *PurgeReleaseMessage) GetV383() *v383.PurgeReleaseMessage {
+	if x, ok := x.GetMsg().(*PurgeReleaseMessage_V383); ok {
+		return x.V383
+	}
+	return nil
+}
+
+func (x *PurgeReleaseMessage) GetV42() *v42.PurgeReleaseMessage {
+	if x, ok := x.GetMsg().(*PurgeReleaseMessage_V42); ok {
+		return x.V42
+	}
+	return nil
+}
+
+func (x *PurgeReleaseMessage) GetV43() *v43.PurgeReleaseMessage {
+	if x, ok := x.GetMsg().(*PurgeReleaseMessage_V43); ok {
+		return x.V43
+	}
+	return nil
+}
+
+func (x *PurgeReleaseMessage) GetV432() *v432.PurgeReleaseMessage {
+	if x, ok := x.GetMsg().(*PurgeReleaseMessage_V432); ok {
+		return x.V432
+	}
+	return nil
+}
+
+type isPurgeReleaseMessage_Msg interface {
+	isPurgeReleaseMessage_Msg()
+}
+
+type PurgeReleaseMessage_V381 struct {
+	V381 *v381.PurgeReleaseMessage `protobuf:"bytes,1,opt,name=v381,proto3,oneof"`
+}
+
+type PurgeReleaseMessage_V383 struct {
+	V383 *v383.PurgeReleaseMessage `protobuf:"bytes,2,opt,name=v383,proto3,oneof"`
+}
+
+type PurgeReleaseMessage_V42 struct {
+	V42 *v42.PurgeReleaseMessage `protobuf:"bytes,3,opt,name=v42,proto3,oneof"`
+}
+
+type PurgeReleaseMessage_V43 struct {
+	V43 *v43.PurgeReleaseMessage `protobuf:"bytes,4,opt,name=v43,proto3,oneof"`
+}
+
+type PurgeReleaseMessage_V432 struct {
+	V432 *v432.PurgeReleaseMessage `protobuf:"bytes,5,opt,name=v432,proto3,oneof"`
+}
+
+func (*PurgeReleaseMessage_V381) isPurgeReleaseMessage_Msg() {}
+
+func (*PurgeReleaseMessage_V383) isPurgeReleaseMessage_Msg() {}
+
+func (*PurgeReleaseMessage_V42) isPurgeReleaseMessage_Msg() {}
+
+func (*PurgeReleaseMessage_V43) isPurgeReleaseMessage_Msg() {}
+
+func (*PurgeReleaseMessage_V432) isPurgeReleaseMessage_Msg() {}
+
+type PieMessage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Msg:
+	//
+	//	*PieMessage_V10
+	Msg isPieMessage_Msg `protobuf_oneof:"msg"`
+}
+
+func (x *PieMessage) Reset() {
+	*x = PieMessage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ddex_v1_v1_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PieMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PieMessage) ProtoMessage() {}
+
+func (x *PieMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_ddex_v1_v1_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PieMessage.ProtoReflect.Descriptor instead.
+func (*PieMessage) Descriptor() ([]byte, []int) {
+	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{3}
+}
+
+func (m *PieMessage) GetMsg() isPieMessage_Msg {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
+func (x *PieMessage) GetV10() *v10.PieMessage {
+	if x, ok := x.GetMsg().(*PieMessage_V10); ok {
+		return x.V10
+	}
+	return nil
+}
+
+type isPieMessage_Msg interface {
+	isPieMessage_Msg()
+}
+
+type PieMessage_V10 struct {
+	V10 *v10.PieMessage `protobuf:"bytes,1,opt,name=v10,proto3,oneof"`
+}
+
+func (*PieMessage_V10) isPieMessage_Msg() {}
+
+type MeadMessage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Msg:
+	//
+	//	*MeadMessage_V11
+	Msg isMeadMessage_Msg `protobuf_oneof:"msg"`
+}
+
+func (x *MeadMessage) Reset() {
+	*x = MeadMessage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ddex_v1_v1_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MeadMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MeadMessage) ProtoMessage() {}
+
+func (x *MeadMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_ddex_v1_v1_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MeadMessage.ProtoReflect.Descriptor instead.
+func (*MeadMessage) Descriptor() ([]byte, []int) {
+	return file_ddex_v1_v1_proto_rawDescGZIP(), []int{4}
+}
+
+func (m *MeadMessage) GetMsg() isMeadMessage_Msg {
+	if m != nil {
+		return m.Msg
+	}
+	return nil
+}
+
+func (x *MeadMessage) GetV11() *v11.MeadMessage {
+	if x, ok := x.GetMsg().(*MeadMessage_V11); ok {
+		return x.V11
+	}
+	return nil
+}
+
+type isMeadMessage_Msg interface {
+	isMeadMessage_Msg()
+}
+
+type MeadMessage_V11 struct {
+	V11 *v11.MeadMessage `protobuf:"bytes,1,opt,name=v11,proto3,oneof"`
+}
+
+func (*MeadMessage_V11) isMeadMessage_Msg() {}
 
 var File_ddex_v1_v1_proto protoreflect.FileDescriptor
 
 var file_ddex_v1_v1_proto_rawDesc = []byte{
 	0x0a, 0x10, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x76, 0x31, 0x2f, 0x76, 0x31, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x12, 0x07, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x76, 0x31, 0x22, 0x0d, 0x0a, 0x0b, 0x50,
-	0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x0e, 0x0a, 0x0c, 0x50, 0x69,
-	0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x3d, 0x0a, 0x04, 0x44, 0x64,
-	0x65, 0x78, 0x12, 0x35, 0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x14, 0x2e, 0x64, 0x64, 0x65,
-	0x78, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x15, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x2b, 0x5a, 0x29, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6f, 0x6e, 0x61, 0x74, 0x61, 0x2d, 0x6c,
-	0x61, 0x62, 0x73, 0x2f, 0x73, 0x6f, 0x6e, 0x61, 0x74, 0x61, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x64,
-	0x64, 0x65, 0x78, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x6f, 0x12, 0x07, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x76, 0x31, 0x1a, 0x18, 0x64, 0x64, 0x65,
+	0x78, 0x2f, 0x65, 0x72, 0x6e, 0x2f, 0x76, 0x33, 0x38, 0x31, 0x2f, 0x76, 0x33, 0x38, 0x31, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x18, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x65, 0x72, 0x6e, 0x2f,
+	0x76, 0x33, 0x38, 0x33, 0x2f, 0x76, 0x33, 0x38, 0x33, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
+	0x16, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x65, 0x72, 0x6e, 0x2f, 0x76, 0x34, 0x32, 0x2f, 0x76, 0x34,
+	0x32, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x16, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x65, 0x72,
+	0x6e, 0x2f, 0x76, 0x34, 0x33, 0x2f, 0x76, 0x34, 0x33, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
+	0x18, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x65, 0x72, 0x6e, 0x2f, 0x76, 0x34, 0x33, 0x32, 0x2f, 0x76,
+	0x34, 0x33, 0x32, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x64, 0x64, 0x65, 0x78, 0x2f,
+	0x6d, 0x65, 0x61, 0x64, 0x2f, 0x76, 0x31, 0x31, 0x2f, 0x76, 0x31, 0x31, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x1a, 0x16, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x70, 0x69, 0x65, 0x2f, 0x76, 0x31, 0x30,
+	0x2f, 0x76, 0x31, 0x30, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xac, 0x02, 0x0a, 0x11, 0x4e,
+	0x65, 0x77, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x12, 0x36, 0x0a, 0x04, 0x76, 0x33, 0x38, 0x31, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20,
+	0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x33, 0x38, 0x31, 0x2e, 0x4e,
+	0x65, 0x77, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x48, 0x00, 0x52, 0x04, 0x76, 0x33, 0x38, 0x31, 0x12, 0x36, 0x0a, 0x04, 0x76, 0x33, 0x38, 0x33,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72,
+	0x6e, 0x2e, 0x76, 0x33, 0x38, 0x33, 0x2e, 0x4e, 0x65, 0x77, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73,
+	0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x76, 0x33, 0x38, 0x33,
+	0x12, 0x33, 0x0a, 0x03, 0x76, 0x34, 0x32, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e,
+	0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x34, 0x32, 0x2e, 0x4e, 0x65, 0x77,
+	0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00,
+	0x52, 0x03, 0x76, 0x34, 0x32, 0x12, 0x33, 0x0a, 0x03, 0x76, 0x34, 0x33, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x34,
+	0x33, 0x2e, 0x4e, 0x65, 0x77, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x03, 0x76, 0x34, 0x33, 0x12, 0x36, 0x0a, 0x04, 0x76, 0x34,
+	0x33, 0x32, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e,
+	0x65, 0x72, 0x6e, 0x2e, 0x76, 0x34, 0x33, 0x32, 0x2e, 0x4e, 0x65, 0x77, 0x52, 0x65, 0x6c, 0x65,
+	0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x76, 0x34,
+	0x33, 0x32, 0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x22, 0x8d, 0x01, 0x0a, 0x12, 0x43, 0x61,
+	0x74, 0x61, 0x6c, 0x6f, 0x67, 0x4c, 0x69, 0x73, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x12, 0x37, 0x0a, 0x04, 0x76, 0x33, 0x38, 0x31, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21,
+	0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x33, 0x38, 0x31, 0x2e, 0x43,
+	0x61, 0x74, 0x61, 0x6c, 0x6f, 0x67, 0x4c, 0x69, 0x73, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x48, 0x00, 0x52, 0x04, 0x76, 0x33, 0x38, 0x31, 0x12, 0x37, 0x0a, 0x04, 0x76, 0x33, 0x38,
+	0x33, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65,
+	0x72, 0x6e, 0x2e, 0x76, 0x33, 0x38, 0x33, 0x2e, 0x43, 0x61, 0x74, 0x61, 0x6c, 0x6f, 0x67, 0x4c,
+	0x69, 0x73, 0x74, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x76, 0x33,
+	0x38, 0x33, 0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x22, 0xb8, 0x02, 0x0a, 0x13, 0x50, 0x75,
+	0x72, 0x67, 0x65, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x12, 0x38, 0x0a, 0x04, 0x76, 0x33, 0x38, 0x31, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x22, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x33, 0x38, 0x31, 0x2e,
+	0x50, 0x75, 0x72, 0x67, 0x65, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x76, 0x33, 0x38, 0x31, 0x12, 0x38, 0x0a, 0x04, 0x76,
+	0x33, 0x38, 0x33, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x64, 0x64, 0x65, 0x78,
+	0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x33, 0x38, 0x33, 0x2e, 0x50, 0x75, 0x72, 0x67, 0x65, 0x52,
+	0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52,
+	0x04, 0x76, 0x33, 0x38, 0x33, 0x12, 0x35, 0x0a, 0x03, 0x76, 0x34, 0x32, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x21, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x34,
+	0x32, 0x2e, 0x50, 0x75, 0x72, 0x67, 0x65, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x03, 0x76, 0x34, 0x32, 0x12, 0x35, 0x0a, 0x03,
+	0x76, 0x34, 0x33, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x64, 0x64, 0x65, 0x78,
+	0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x34, 0x33, 0x2e, 0x50, 0x75, 0x72, 0x67, 0x65, 0x52, 0x65,
+	0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x03,
+	0x76, 0x34, 0x33, 0x12, 0x38, 0x0a, 0x04, 0x76, 0x34, 0x33, 0x32, 0x18, 0x05, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x22, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x65, 0x72, 0x6e, 0x2e, 0x76, 0x34, 0x33,
+	0x32, 0x2e, 0x50, 0x75, 0x72, 0x67, 0x65, 0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x76, 0x34, 0x33, 0x32, 0x42, 0x05, 0x0a,
+	0x03, 0x6d, 0x73, 0x67, 0x22, 0x41, 0x0a, 0x0a, 0x50, 0x69, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x12, 0x2c, 0x0a, 0x03, 0x76, 0x31, 0x30, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x18, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x70, 0x69, 0x65, 0x2e, 0x76, 0x31, 0x30, 0x2e, 0x50,
+	0x69, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x03, 0x76, 0x31, 0x30,
+	0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x22, 0x44, 0x0a, 0x0b, 0x4d, 0x65, 0x61, 0x64, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x2e, 0x0a, 0x03, 0x76, 0x31, 0x31, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x64, 0x64, 0x65, 0x78, 0x2e, 0x6d, 0x65, 0x61, 0x64, 0x2e,
+	0x76, 0x31, 0x31, 0x2e, 0x4d, 0x65, 0x61, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48,
+	0x00, 0x52, 0x03, 0x76, 0x31, 0x31, 0x42, 0x05, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x42, 0x2b, 0x5a,
+	0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6f, 0x6e, 0x61,
+	0x74, 0x61, 0x2d, 0x6c, 0x61, 0x62, 0x73, 0x2f, 0x73, 0x6f, 0x6e, 0x61, 0x74, 0x61, 0x2f, 0x67,
+	0x65, 0x6e, 0x2f, 0x64, 0x64, 0x65, 0x78, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -124,19 +578,48 @@ func file_ddex_v1_v1_proto_rawDescGZIP() []byte {
 	return file_ddex_v1_v1_proto_rawDescData
 }
 
-var file_ddex_v1_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_ddex_v1_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_ddex_v1_v1_proto_goTypes = []interface{}{
-	(*PingRequest)(nil),  // 0: ddex.v1.PingRequest
-	(*PingResponse)(nil), // 1: ddex.v1.PingResponse
+	(*NewReleaseMessage)(nil),        // 0: ddex.v1.NewReleaseMessage
+	(*CatalogListMessage)(nil),       // 1: ddex.v1.CatalogListMessage
+	(*PurgeReleaseMessage)(nil),      // 2: ddex.v1.PurgeReleaseMessage
+	(*PieMessage)(nil),               // 3: ddex.v1.PieMessage
+	(*MeadMessage)(nil),              // 4: ddex.v1.MeadMessage
+	(*v381.NewReleaseMessage)(nil),   // 5: ddex.ern.v381.NewReleaseMessage
+	(*v383.NewReleaseMessage)(nil),   // 6: ddex.ern.v383.NewReleaseMessage
+	(*v42.NewReleaseMessage)(nil),    // 7: ddex.ern.v42.NewReleaseMessage
+	(*v43.NewReleaseMessage)(nil),    // 8: ddex.ern.v43.NewReleaseMessage
+	(*v432.NewReleaseMessage)(nil),   // 9: ddex.ern.v432.NewReleaseMessage
+	(*v381.CatalogListMessage)(nil),  // 10: ddex.ern.v381.CatalogListMessage
+	(*v383.CatalogListMessage)(nil),  // 11: ddex.ern.v383.CatalogListMessage
+	(*v381.PurgeReleaseMessage)(nil), // 12: ddex.ern.v381.PurgeReleaseMessage
+	(*v383.PurgeReleaseMessage)(nil), // 13: ddex.ern.v383.PurgeReleaseMessage
+	(*v42.PurgeReleaseMessage)(nil),  // 14: ddex.ern.v42.PurgeReleaseMessage
+	(*v43.PurgeReleaseMessage)(nil),  // 15: ddex.ern.v43.PurgeReleaseMessage
+	(*v432.PurgeReleaseMessage)(nil), // 16: ddex.ern.v432.PurgeReleaseMessage
+	(*v10.PieMessage)(nil),           // 17: ddex.pie.v10.PieMessage
+	(*v11.MeadMessage)(nil),          // 18: ddex.mead.v11.MeadMessage
 }
 var file_ddex_v1_v1_proto_depIdxs = []int32{
-	0, // 0: ddex.v1.Ddex.Ping:input_type -> ddex.v1.PingRequest
-	1, // 1: ddex.v1.Ddex.Ping:output_type -> ddex.v1.PingResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	5,  // 0: ddex.v1.NewReleaseMessage.v381:type_name -> ddex.ern.v381.NewReleaseMessage
+	6,  // 1: ddex.v1.NewReleaseMessage.v383:type_name -> ddex.ern.v383.NewReleaseMessage
+	7,  // 2: ddex.v1.NewReleaseMessage.v42:type_name -> ddex.ern.v42.NewReleaseMessage
+	8,  // 3: ddex.v1.NewReleaseMessage.v43:type_name -> ddex.ern.v43.NewReleaseMessage
+	9,  // 4: ddex.v1.NewReleaseMessage.v432:type_name -> ddex.ern.v432.NewReleaseMessage
+	10, // 5: ddex.v1.CatalogListMessage.v381:type_name -> ddex.ern.v381.CatalogListMessage
+	11, // 6: ddex.v1.CatalogListMessage.v383:type_name -> ddex.ern.v383.CatalogListMessage
+	12, // 7: ddex.v1.PurgeReleaseMessage.v381:type_name -> ddex.ern.v381.PurgeReleaseMessage
+	13, // 8: ddex.v1.PurgeReleaseMessage.v383:type_name -> ddex.ern.v383.PurgeReleaseMessage
+	14, // 9: ddex.v1.PurgeReleaseMessage.v42:type_name -> ddex.ern.v42.PurgeReleaseMessage
+	15, // 10: ddex.v1.PurgeReleaseMessage.v43:type_name -> ddex.ern.v43.PurgeReleaseMessage
+	16, // 11: ddex.v1.PurgeReleaseMessage.v432:type_name -> ddex.ern.v432.PurgeReleaseMessage
+	17, // 12: ddex.v1.PieMessage.v10:type_name -> ddex.pie.v10.PieMessage
+	18, // 13: ddex.v1.MeadMessage.v11:type_name -> ddex.mead.v11.MeadMessage
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_ddex_v1_v1_proto_init() }
@@ -146,7 +629,7 @@ func file_ddex_v1_v1_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_ddex_v1_v1_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PingRequest); i {
+			switch v := v.(*NewReleaseMessage); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -158,7 +641,43 @@ func file_ddex_v1_v1_proto_init() {
 			}
 		}
 		file_ddex_v1_v1_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PingResponse); i {
+			switch v := v.(*CatalogListMessage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ddex_v1_v1_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PurgeReleaseMessage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ddex_v1_v1_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PieMessage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ddex_v1_v1_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MeadMessage); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -170,15 +689,39 @@ func file_ddex_v1_v1_proto_init() {
 			}
 		}
 	}
+	file_ddex_v1_v1_proto_msgTypes[0].OneofWrappers = []interface{}{
+		(*NewReleaseMessage_V381)(nil),
+		(*NewReleaseMessage_V383)(nil),
+		(*NewReleaseMessage_V42)(nil),
+		(*NewReleaseMessage_V43)(nil),
+		(*NewReleaseMessage_V432)(nil),
+	}
+	file_ddex_v1_v1_proto_msgTypes[1].OneofWrappers = []interface{}{
+		(*CatalogListMessage_V381)(nil),
+		(*CatalogListMessage_V383)(nil),
+	}
+	file_ddex_v1_v1_proto_msgTypes[2].OneofWrappers = []interface{}{
+		(*PurgeReleaseMessage_V381)(nil),
+		(*PurgeReleaseMessage_V383)(nil),
+		(*PurgeReleaseMessage_V42)(nil),
+		(*PurgeReleaseMessage_V43)(nil),
+		(*PurgeReleaseMessage_V432)(nil),
+	}
+	file_ddex_v1_v1_proto_msgTypes[3].OneofWrappers = []interface{}{
+		(*PieMessage_V10)(nil),
+	}
+	file_ddex_v1_v1_proto_msgTypes[4].OneofWrappers = []interface{}{
+		(*MeadMessage_V11)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ddex_v1_v1_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   5,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   0,
 		},
 		GoTypes:           file_ddex_v1_v1_proto_goTypes,
 		DependencyIndexes: file_ddex_v1_v1_proto_depIdxs,

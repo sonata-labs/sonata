@@ -4,6 +4,7 @@ modules:
     name: buf.build/sonata-labs/sonata
 deps:
   - buf.build/cometbft/cometbft:v1.0.0
+  - buf.build/sonata/ddex:v0.1.0
 lint:
   use:
     - STANDARD

@@ -2,11 +2,10 @@ syntax = "proto3";
 
 package validator.v1;
 
+import "cometbft/types/v1beta1/validator.proto";
+
 option go_package = "github.com/sonata-labs/sonata/gen/validator/v1";
 
-message PingRequest {}
-message PingResponse {}
-
-service Validator {
-  rpc Ping(PingRequest) returns (PingResponse) {}
+message Validator {
+  cometbft.types.v1beta1.Validator validator = 1;
 }

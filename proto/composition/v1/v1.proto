@@ -4,9 +4,8 @@ package composition.v1;
 
 option go_package = "github.com/sonata-labs/sonata/gen/composition/v1";
 
-message PingRequest {}
-message PingResponse {}
-
-service Composition {
-  rpc Ping(PingRequest) returns (PingResponse) {}
+// Compositions are JS files run by goja.
+message Composition {
+  string address = 1;
+  bytes file = 2;
 }

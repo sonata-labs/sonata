@@ -4,9 +4,9 @@ package account.v1;
 
 option go_package = "github.com/sonata-labs/sonata/gen/account/v1";
 
-message PingRequest {}
-message PingResponse {}
-
-service Account {
-  rpc Ping(PingRequest) returns (PingResponse) {}
+message Account {
+  string address = 1;
+  string pub_key = 2;
+  uint64 balance = 3;
+  uint64 nonce = 4;
 }
