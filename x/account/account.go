@@ -13,12 +13,11 @@ type AccountService struct {
 	config *config.Config
 }
 
-var _ v1connect.AccountHandler = (*AccountService)(nil)
-
-// Ping implements v1connect.AccountHandler.
-func (a *AccountService) Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error) {
+func (a *AccountService) GetAccount(context.Context, *connect.Request[v1.GetAccountRequest]) (*connect.Response[v1.GetAccountResponse], error) {
 	panic("unimplemented")
 }
+
+var _ v1connect.AccountHandler = (*AccountService)(nil)
 
 func NewAccountService(config *config.Config) *AccountService {
 	return &AccountService{

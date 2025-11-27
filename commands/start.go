@@ -25,7 +25,11 @@ func NewStartCommand() *cobra.Command {
 				return err
 			}
 
-			app := app.NewApp(config)
+			app, err := app.NewApp(config)
+			if err != nil {
+				return err
+			}
+
 			if err := app.Run(cmd.Context()); err != nil {
 				if errors.Is(err, context.Canceled) {
 					return nil

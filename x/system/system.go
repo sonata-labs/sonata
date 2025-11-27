@@ -13,12 +13,23 @@ type SystemService struct {
 	config *config.Config
 }
 
-var _ v1connect.SystemHandler = (*SystemService)(nil)
-
-// Ping implements v1connect.SystemHandler.
-func (s *SystemService) Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error) {
+func (s *SystemService) GetHealth(context.Context, *connect.Request[v1.GetHealthRequest]) (*connect.Response[v1.GetHealthResponse], error) {
 	panic("unimplemented")
 }
+
+func (s *SystemService) GetNodeInfo(context.Context, *connect.Request[v1.GetNodeInfoRequest]) (*connect.Response[v1.GetNodeInfoResponse], error) {
+	panic("unimplemented")
+}
+
+func (s *SystemService) GetReady(context.Context, *connect.Request[v1.GetReadyRequest]) (*connect.Response[v1.GetReadyResponse], error) {
+	panic("unimplemented")
+}
+
+func (s *SystemService) GetStatus(context.Context, *connect.Request[v1.GetStatusRequest]) (*connect.Response[v1.GetStatusResponse], error) {
+	panic("unimplemented")
+}
+
+var _ v1connect.SystemHandler = (*SystemService)(nil)
 
 func NewSystemService(config *config.Config) *SystemService {
 	return &SystemService{

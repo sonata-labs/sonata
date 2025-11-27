@@ -13,12 +13,31 @@ type DDEXService struct {
 	config *config.Config
 }
 
-var _ v1connect.DDEXHandler = (*DDEXService)(nil)
-
-// Ping implements v1connect.DDEXHandler.
-func (d *DDEXService) Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error) {
+func (d *DDEXService) GetCatalogListMessage(context.Context, *connect.Request[v1.GetCatalogListMessageRequest]) (*connect.Response[v1.GetCatalogListMessageResponse], error) {
 	panic("unimplemented")
 }
+
+func (d *DDEXService) GetMeadMessage(context.Context, *connect.Request[v1.GetMeadMessageRequest]) (*connect.Response[v1.GetMeadMessageResponse], error) {
+	panic("unimplemented")
+}
+
+func (d *DDEXService) GetNewReleaseMessage(context.Context, *connect.Request[v1.GetNewReleaseMessageRequest]) (*connect.Response[v1.GetNewReleaseMessageResponse], error) {
+	panic("unimplemented")
+}
+
+func (d *DDEXService) GetPieMessage(context.Context, *connect.Request[v1.GetPieMessageRequest]) (*connect.Response[v1.GetPieMessageResponse], error) {
+	panic("unimplemented")
+}
+
+func (d *DDEXService) GetPieRequestMessage(context.Context, *connect.Request[v1.GetPieRequestMessageRequest]) (*connect.Response[v1.GetPieRequestMessageResponse], error) {
+	panic("unimplemented")
+}
+
+func (d *DDEXService) GetPurgeReleaseMessage(context.Context, *connect.Request[v1.GetPurgeReleaseMessageRequest]) (*connect.Response[v1.GetPurgeReleaseMessageResponse], error) {
+	panic("unimplemented")
+}
+
+var _ v1connect.DDEXHandler = (*DDEXService)(nil)
 
 func NewDDEXService(config *config.Config) *DDEXService {
 	return &DDEXService{

@@ -18,14 +18,18 @@ func DefaultHomeDirPath() string {
 }
 
 type Config struct {
-	HTTP   *HTTPConfig
-	Socket *SocketConfig
+	HTTP       *HTTPConfig
+	Socket     *SocketConfig
+	ChainStore *ChainStoreConfig
+	LocalStore *LocalStoreConfig
 }
 
 func DefaultConfig() *Config {
 	return &Config{
-		HTTP:   DefaultHTTPConfig(),
-		Socket: DefaultSocketConfig(),
+		HTTP:       DefaultHTTPConfig(),
+		Socket:     DefaultSocketConfig(),
+		ChainStore: DefaultChainStoreConfig(),
+		LocalStore: DefaultLocalStoreConfig(),
 	}
 }
 
@@ -48,5 +52,25 @@ type SocketConfig struct {
 func DefaultSocketConfig() *SocketConfig {
 	return &SocketConfig{
 		Path: "unix:///tmp/sonata.sock",
+	}
+}
+
+type ChainStoreConfig struct {
+	Path string
+}
+
+func DefaultChainStoreConfig() *ChainStoreConfig {
+	return &ChainStoreConfig{
+		Path: filepath.Join(DefaultHomeDirPath(), "chainstore"),
+	}
+}
+
+type LocalStoreConfig struct {
+	Path string
+}
+
+func DefaultLocalStoreConfig() *LocalStoreConfig {
+	return &LocalStoreConfig{
+		Path: filepath.Join(DefaultHomeDirPath(), "localstore"),
 	}
 }

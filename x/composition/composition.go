@@ -15,8 +15,7 @@ type CompositionService struct {
 
 var _ v1connect.CompositionHandler = (*CompositionService)(nil)
 
-// Ping implements v1connect.CompositionHandler.
-func (c *CompositionService) Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error) {
+func (c *CompositionService) GetComposition(context.Context, *connect.Request[v1.GetCompositionRequest]) (*connect.Response[v1.GetCompositionResponse], error) {
 	panic("unimplemented")
 }
 

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/api/v1";
+
+service Chain {
+  rpc GetBlock(GetBlockRequest) returns (GetBlockResponse) {}
+  rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse) {}
+  rpc SendTransaction(SendTransactionRequest) returns (SendTransactionResponse) {}
+}
+
+message GetBlockRequest {}
+
+message GetBlockResponse {}
+
+message GetTransactionRequest {}
+
+message GetTransactionResponse {}
+
+message SendTransactionRequest {}
+
+message SendTransactionResponse {}
+

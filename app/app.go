@@ -12,10 +12,12 @@ import (
 	"github.com/sonata-labs/sonata/config"
 	"github.com/sonata-labs/sonata/gen/api/v1/v1connect"
 	"github.com/sonata-labs/sonata/store/chainstore"
+	pebble_chainstore "github.com/sonata-labs/sonata/store/chainstore/pebble"
 	"github.com/sonata-labs/sonata/store/localstore"
+	pebble_localstore "github.com/sonata-labs/sonata/store/localstore/pebble"
 	"github.com/sonata-labs/sonata/x/account"
+	"github.com/sonata-labs/sonata/x/chain"
 	"github.com/sonata-labs/sonata/x/composition"
-	"github.com/sonata-labs/sonata/x/core"
 	"github.com/sonata-labs/sonata/x/ddex"
 	"github.com/sonata-labs/sonata/x/p2p"
 	"github.com/sonata-labs/sonata/x/storage"
@@ -29,7 +31,7 @@ type App struct {
 
 	httpServer *echo.Echo
 
-	core        v1connect.CoreHandler
+	chain       v1connect.ChainHandler
 	storage     v1connect.StorageHandler
 	system      v1connect.SystemHandler
 	p2p         v1connect.P2PHandler
@@ -38,12 +40,12 @@ type App struct {
 	account     v1connect.AccountHandler
 	validator   v1connect.ValidatorHandler
 
-	chainstore v1connect.ChainStoreHandler
-	localstore v1connect.LocalStoreHandler
+	chainStore chainstore.ChainStore
+	localStore localstore.LocalStore
 }
 
-func NewApp(config *config.Config) *App {
-	core := core.NewCoreService(config)
+func NewApp(config *config.Config) (*App, error) {
+	chain := chain.NewChainService(config)
 	storage := storage.NewStorageService(config)
 	system := system.NewSystemService(config)
 	p2p := p2p.NewP2PService(config)
@@ -52,8 +54,15 @@ func NewApp(config *config.Config) *App {
 	account := account.NewAccountService(config)
 	validator := validator.NewValidatorService(config)
 
-	chainstore := chainstore.NewChainStoreService(config)
-	localstore := localstore.NewLocalStoreService(config)
+	chainStore, err := pebble_chainstore.NewPebbleChainStore(config.ChainStore.Path)
+	if err != nil {
+		return nil, err
+	}
+
+	localStore, err := pebble_localstore.NewPebbleLocalStore(config.LocalStore.Path)
+	if err != nil {
+		return nil, err
+	}
 
 	httpServer := echo.New()
 
@@ -66,8 +75,8 @@ func NewApp(config *config.Config) *App {
 	})
 
 	rpcGroup := httpServer.Group("")
-	corePath, coreHandler := v1connect.NewCoreHandler(core)
-	rpcGroup.Any(corePath, echo.WrapHandler(coreHandler))
+	chainPath, chainHandler := v1connect.NewChainHandler(chain)
+	rpcGroup.Any(chainPath, echo.WrapHandler(chainHandler))
 
 	storagePath, storageHandler := v1connect.NewStorageHandler(storage)
 	rpcGroup.Any(storagePath, echo.WrapHandler(storageHandler))
@@ -93,7 +102,6 @@ func NewApp(config *config.Config) *App {
 	return &App{
 		config:      config,
 		httpServer:  httpServer,
-		core:        core,
 		storage:     storage,
 		system:      system,
 		p2p:         p2p,
@@ -101,9 +109,9 @@ func NewApp(config *config.Config) *App {
 		composition: composition,
 		account:     account,
 		validator:   validator,
-		chainstore:  chainstore,
-		localstore:  localstore,
-	}
+		chainStore:  chainStore,
+		localStore:  localStore,
+	}, nil
 }
 
 func (app *App) Run(ctx context.Context) error {

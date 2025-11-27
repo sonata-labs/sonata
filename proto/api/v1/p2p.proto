@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/api/v1";
+
+service P2P {
+  rpc Stream(stream StreamRequest) returns (stream StreamResponse) {}
+}
+
+message StreamRequest {}
+
+message StreamResponse {}
+

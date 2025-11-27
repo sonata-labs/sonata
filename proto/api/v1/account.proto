@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/api/v1";
+
+service Account {
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {}
+}
+
+message GetAccountRequest {}
+
+message GetAccountResponse {}
+

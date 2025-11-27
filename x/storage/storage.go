@@ -13,12 +13,23 @@ type StorageService struct {
 	config *config.Config
 }
 
-var _ v1connect.StorageHandler = (*StorageService)(nil)
-
-// Ping implements v1connect.StorageHandler.
-func (s *StorageService) Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error) {
+func (s *StorageService) DownloadFile(context.Context, *connect.Request[v1.DownloadFileRequest]) (*connect.Response[v1.DownloadFileResponse], error) {
 	panic("unimplemented")
 }
+
+func (s *StorageService) DownloadFileChunk(context.Context, *connect.Request[v1.DownloadFileChunkRequest], *connect.ServerStream[v1.DownloadFileChunkResponse]) error {
+	panic("unimplemented")
+}
+
+func (s *StorageService) Upload(context.Context, *connect.Request[v1.UploadRequest]) (*connect.Response[v1.UploadResponse], error) {
+	panic("unimplemented")
+}
+
+func (s *StorageService) UploadChunk(context.Context, *connect.Request[v1.UploadChunkRequest]) (*connect.Response[v1.UploadChunkResponse], error) {
+	panic("unimplemented")
+}
+
+var _ v1connect.StorageHandler = (*StorageService)(nil)
 
 func NewStorageService(config *config.Config) *StorageService {
 	return &StorageService{

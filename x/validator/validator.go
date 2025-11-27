@@ -13,12 +13,15 @@ type ValidatorService struct {
 	config *config.Config
 }
 
-var _ v1connect.ValidatorHandler = (*ValidatorService)(nil)
-
-// Ping implements v1connect.ValidatorHandler.
-func (v *ValidatorService) Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error) {
+func (v *ValidatorService) GetValidator(context.Context, *connect.Request[v1.GetValidatorRequest]) (*connect.Response[v1.GetValidatorResponse], error) {
 	panic("unimplemented")
 }
+
+func (v *ValidatorService) GetValidators(context.Context, *connect.Request[v1.GetValidatorsRequest]) (*connect.Response[v1.GetValidatorsResponse], error) {
+	panic("unimplemented")
+}
+
+var _ v1connect.ValidatorHandler = (*ValidatorService)(nil)
 
 func NewValidatorService(config *config.Config) *ValidatorService {
 	return &ValidatorService{

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/sonata-labs/sonata/gen/api/v1";
+
+service Storage {
+  rpc Upload(UploadRequest) returns (UploadResponse) {}
+  rpc UploadChunk(UploadChunkRequest) returns (UploadChunkResponse) {}
+  rpc DownloadFile(DownloadFileRequest) returns (DownloadFileResponse) {}
+  rpc DownloadFileChunk(DownloadFileChunkRequest) returns (stream DownloadFileChunkResponse) {}
+}
+
+message UploadRequest {}
+
+message UploadResponse {}
+
+message UploadChunkRequest {}
+
+message UploadChunkResponse {}
+
+message DownloadFileRequest {}
+
+message DownloadFileResponse {}
+
+message DownloadFileChunkRequest {}
+
+message DownloadFileChunkResponse {}
+
