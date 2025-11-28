@@ -37,6 +37,17 @@ func DefaultConfig() *Config {
 	}
 }
 
+func (c *Config) ValidateBasic() error {
+	return nil
+}
+
+func (c *Config) SetRoot(root string) {
+	// c.HTTP.SetRoot(root)
+	// c.Socket.SetRoot(root)
+	// c.ChainStore.SetRoot(root)
+	// c.LocalStore.SetRoot(root)
+}
+
 type HTTPConfig struct {
 	Host string
 	Port int
