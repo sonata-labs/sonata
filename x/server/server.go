@@ -55,13 +55,14 @@ func NewServer(config *config.Config, logger *zap.Logger, chain v1connect.ChainH
 }
 
 func (s *Server) Start() error {
-	if err := s.BaseModule.Start(); err != nil {
-		return err
-	}
+	s.AwaitStartupDeps()
+	s.Logger.Info("starting")
 
 	s.registerRoutes()
 
 	address := fmt.Sprintf("%s:%d", s.config.Sonata.HTTP.Host, s.config.Sonata.HTTP.Port)
+	s.MarkReady()
+
 	if err := s.httpServer.Start(address); err != nil && err != http.ErrServerClosed {
 		return fmt.Errorf("starting http server: %w", err)
 	}
@@ -69,12 +70,16 @@ func (s *Server) Start() error {
 }
 
 func (s *Server) Stop() error {
+	s.AwaitShutdownDeps()
+	s.Logger.Info("stopping")
+
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
 
-	if err := s.httpServer.Shutdown(shutdownCtx); err != nil && err != http.ErrServerClosed {
-		return err
+	var err error
+	if shutdownErr := s.httpServer.Shutdown(shutdownCtx); shutdownErr != nil && shutdownErr != http.ErrServerClosed {
+		err = shutdownErr
 	}
-
-	return nil
+	s.MarkStopped()
+	return err
 }

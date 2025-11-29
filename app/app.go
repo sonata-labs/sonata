@@ -124,6 +124,32 @@ func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 		return nil, err
 	}
 
+	// Register startup dependencies
+	// Core waits for all modules to be ready before starting CometBFT
+	coreSvc.RegisterStartupDeps(
+		chainSvc.Ready(), storageSvc.Ready(), systemSvc.Ready(),
+		p2pSvc.Ready(), ddexSvc.Ready(), compositionSvc.Ready(),
+		accountSvc.Ready(), validatorSvc.Ready(), statesyncSvc.Ready(),
+	)
+	// Server waits for core to be ready before accepting HTTP traffic
+	serverSvc.RegisterStartupDeps(coreSvc.Ready())
+
+	// Register shutdown dependencies (reverse order of startup)
+	// Server shuts down first (no deps)
+	// Core waits for server to stop before shutting down
+	coreSvc.RegisterShutdownDeps(serverSvc.Stopped())
+
+	// All modules wait for core to stop before shutting down
+	chainSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	storageSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	systemSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	p2pSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	ddexSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	compositionSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	accountSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	validatorSvc.RegisterShutdownDeps(coreSvc.Stopped())
+	statesyncSvc.RegisterShutdownDeps(coreSvc.Stopped())
+
 	return &App{
 		core:   coreSvc,
 		config: cfg,
@@ -172,13 +198,9 @@ func (app *App) Run(ctx context.Context) error {
 }
 
 func (app *App) Shutdown() error {
-
 	eg, _ := errgroup.WithContext(context.Background())
-	defer func() {
-		app.logger.Info("shutdown complete")
-	}()
+	defer app.logger.Info("shutdown complete")
 
-	// shutdown all modules
 	eg.Go(app.server.Stop)
 	eg.Go(app.core.Stop)
 	eg.Go(app.ddex.Stop)

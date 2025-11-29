@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"sync"
 
 	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"go.uber.org/zap"
@@ -10,6 +11,16 @@ import (
 type Module interface {
 	// Name of the module
 	Name() string
+
+	// Startup dependency management
+	RegisterStartupDeps(deps ...<-chan struct{})
+	AwaitStartupDeps()
+	Ready() <-chan struct{}
+
+	// Shutdown dependency management
+	RegisterShutdownDeps(deps ...<-chan struct{})
+	AwaitShutdownDeps()
+	Stopped() <-chan struct{}
 
 	// Lifecycle methods
 	Start() error
@@ -22,12 +33,18 @@ type Module interface {
 var _ Module = (*BaseModule)(nil)
 
 type BaseModule struct {
-	Logger *zap.SugaredLogger
+	Logger       *zap.SugaredLogger
+	ready        chan struct{}
+	startupDeps  []<-chan struct{}
+	stopped      chan struct{}
+	shutdownDeps []<-chan struct{}
 }
 
 func NewBaseModule(logger *zap.Logger) *BaseModule {
 	return &BaseModule{
-		Logger: logger.Sugar(),
+		Logger:  logger.Sugar(),
+		ready:   make(chan struct{}),
+		stopped: make(chan struct{}),
 	}
 }
 
@@ -35,13 +52,69 @@ func (m *BaseModule) Name() string {
 	return ""
 }
 
+func (m *BaseModule) RegisterStartupDeps(deps ...<-chan struct{}) {
+	m.startupDeps = append(m.startupDeps, deps...)
+}
+
+func (m *BaseModule) Ready() <-chan struct{} {
+	return m.ready
+}
+
+// MarkReady signals that the module is ready to handle requests
+func (m *BaseModule) MarkReady() {
+	close(m.ready)
+}
+
+// AwaitStartupDeps waits for all registered startup dependencies concurrently
+func (m *BaseModule) AwaitStartupDeps() {
+	var wg sync.WaitGroup
+	wg.Add(len(m.startupDeps))
+	for _, dep := range m.startupDeps {
+		go func(ch <-chan struct{}) {
+			<-ch
+			wg.Done()
+		}(dep)
+	}
+	wg.Wait()
+}
+
 func (m *BaseModule) Start() error {
+	m.AwaitStartupDeps()
 	m.Logger.Info("starting")
+	m.MarkReady()
 	return nil
 }
 
+func (m *BaseModule) RegisterShutdownDeps(deps ...<-chan struct{}) {
+	m.shutdownDeps = append(m.shutdownDeps, deps...)
+}
+
+func (m *BaseModule) Stopped() <-chan struct{} {
+	return m.stopped
+}
+
+// MarkStopped signals that the module has finished stopping
+func (m *BaseModule) MarkStopped() {
+	close(m.stopped)
+}
+
+// AwaitShutdownDeps waits for all registered shutdown dependencies concurrently
+func (m *BaseModule) AwaitShutdownDeps() {
+	var wg sync.WaitGroup
+	wg.Add(len(m.shutdownDeps))
+	for _, dep := range m.shutdownDeps {
+		go func(ch <-chan struct{}) {
+			<-ch
+			wg.Done()
+		}(dep)
+	}
+	wg.Wait()
+}
+
 func (m *BaseModule) Stop() error {
+	m.AwaitShutdownDeps()
 	m.Logger.Info("stopping")
+	m.MarkStopped()
 	return nil
 }
 

@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"sync"
 
 	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/node"
@@ -31,10 +32,14 @@ const (
 )
 
 type Core struct {
-	config  *config.Config
-	modules map[Callback][]module.Module
-	node    *node.Node
-	logger  *zap.SugaredLogger
+	config       *config.Config
+	modules      map[Callback][]module.Module
+	node         *node.Node
+	logger       *zap.SugaredLogger
+	ready        chan struct{}
+	startupDeps  []<-chan struct{}
+	stopped      chan struct{}
+	shutdownDeps []<-chan struct{}
 }
 
 func NewCore(config *config.Config, logger *zap.Logger, init func(c *Core) (*node.Node, error)) (*Core, *node.Node, error) {
@@ -42,6 +47,8 @@ func NewCore(config *config.Config, logger *zap.Logger, init func(c *Core) (*nod
 		config:  config,
 		modules: make(map[Callback][]module.Module),
 		logger:  logger.Named("core").Sugar(),
+		ready:   make(chan struct{}),
+		stopped: make(chan struct{}),
 	}
 
 	node, err := init(c)
@@ -64,10 +71,56 @@ func (c *Core) Name() string {
 	return "core"
 }
 
+func (c *Core) RegisterStartupDeps(deps ...<-chan struct{}) {
+	c.startupDeps = append(c.startupDeps, deps...)
+}
+
+func (c *Core) Ready() <-chan struct{} {
+	return c.ready
+}
+
+// AwaitStartupDeps waits for all registered startup dependencies concurrently
+func (c *Core) AwaitStartupDeps() {
+	var wg sync.WaitGroup
+	wg.Add(len(c.startupDeps))
+	for _, dep := range c.startupDeps {
+		go func(ch <-chan struct{}) {
+			<-ch
+			wg.Done()
+		}(dep)
+	}
+	wg.Wait()
+}
+
+func (c *Core) RegisterShutdownDeps(deps ...<-chan struct{}) {
+	c.shutdownDeps = append(c.shutdownDeps, deps...)
+}
+
+func (c *Core) Stopped() <-chan struct{} {
+	return c.stopped
+}
+
+// AwaitShutdownDeps waits for all registered shutdown dependencies concurrently
+func (c *Core) AwaitShutdownDeps() {
+	var wg sync.WaitGroup
+	wg.Add(len(c.shutdownDeps))
+	for _, dep := range c.shutdownDeps {
+		go func(ch <-chan struct{}) {
+			<-ch
+			wg.Done()
+		}(dep)
+	}
+	wg.Wait()
+}
+
 func (c *Core) Start() error {
+	c.AwaitStartupDeps()
+	c.logger.Info("all modules ready, starting cometbft")
+
 	if err := c.node.Start(); err != nil {
 		return err
 	}
+	close(c.ready)
 
 	c.node.Wait()
 
@@ -75,10 +128,15 @@ func (c *Core) Start() error {
 }
 
 func (c *Core) Stop() error {
+	c.AwaitShutdownDeps()
+	c.logger.Info("stopping")
+
+	var err error
 	if c.node != nil {
-		return c.node.Stop()
+		err = c.node.Stop()
 	}
-	return nil
+	close(c.stopped)
+	return err
 }
 
 // Info/Query Connection
