@@ -9,9 +9,11 @@ import (
 	"github.com/cometbft/cometbft/libs/bytes"
 	"github.com/cometbft/cometbft/node"
 	"github.com/cometbft/cometbft/rpc/client/local"
+	"github.com/cosmos/gogoproto/proto"
 	"github.com/sonata-labs/sonata/config"
 	v1 "github.com/sonata-labs/sonata/gen/api/v1"
 	"github.com/sonata-labs/sonata/gen/api/v1/v1connect"
+	chainv1 "github.com/sonata-labs/sonata/gen/chain/v1"
 	"github.com/sonata-labs/sonata/types/module"
 	"go.uber.org/zap"
 )
@@ -105,8 +107,22 @@ func (c *ChainService) InitChain(ctx context.Context, req *abcitypes.InitChainRe
 }
 
 func (c *ChainService) CheckTx(ctx context.Context, req *abcitypes.CheckTxRequest) (*abcitypes.CheckTxResponse, error) {
-	c.Logger.Info("checking tx")
-	return &abcitypes.CheckTxResponse{}, nil
+	tx := req.Tx
+
+	res := &abcitypes.CheckTxResponse{
+		Code: 0,
+	}
+
+	var signedTransaction chainv1.SignedTransaction
+	err := proto.Unmarshal(tx, &signedTransaction)
+	if err != nil {
+		res.Code = 1
+		res.Info = "tx not a signed transaction"
+		res.Log = err.Error()
+		return res, nil
+	}
+
+	return res, nil
 }
 
 func (c *ChainService) PrepareProposal(ctx context.Context, req *abcitypes.PrepareProposalRequest) (*abcitypes.PrepareProposalResponse, error) {
