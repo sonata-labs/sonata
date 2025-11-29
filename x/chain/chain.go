@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"connectrpc.com/connect"
+	abcitypes "github.com/cometbft/cometbft/abci/types"
+	"github.com/cometbft/cometbft/libs/bytes"
 	"github.com/cometbft/cometbft/node"
 	"github.com/cometbft/cometbft/rpc/client/local"
-	"github.com/sonata-labs/sonata/common"
 	"github.com/sonata-labs/sonata/config"
 	v1 "github.com/sonata-labs/sonata/gen/api/v1"
 	"github.com/sonata-labs/sonata/gen/api/v1/v1connect"
@@ -56,7 +56,7 @@ func (c *ChainService) GetTransaction(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("tx hash is required"))
 	}
 
-	txHash := common.TxHashToBytes(req.Msg.TxHash)
+	txHash := bytes.HexBytes(req.Msg.TxHash)
 
 	res, err := c.rpc.Tx(ctx, txHash, req.Msg.Prove)
 	if err != nil {
@@ -65,7 +65,7 @@ func (c *ChainService) GetTransaction(ctx context.Context, req *connect.Request[
 
 	proof := res.Proof.ToProto()
 	return connect.NewResponse(&v1.GetTransactionResponse{
-		TxHash:   common.TxHashToString(res.Hash),
+		TxHash:   res.Hash.String(),
 		Height:   res.Height,
 		Index:    res.Index,
 		TxResult: &res.TxResult,
@@ -74,8 +74,21 @@ func (c *ChainService) GetTransaction(ctx context.Context, req *connect.Request[
 	}), nil
 }
 
-func (c *ChainService) SendTransaction(context.Context, *connect.Request[v1.SendTransactionRequest]) (*connect.Response[v1.SendTransactionResponse], error) {
-	panic("unimplemented")
+func (c *ChainService) SendTransaction(ctx context.Context, req *connect.Request[v1.SendTransactionRequest]) (*connect.Response[v1.SendTransactionResponse], error) {
+	rpc := c.rpc
+
+	if len(req.Msg.SignedTransaction) == 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("signed transaction is required"))
+	}
+
+	res, err := rpc.BroadcastTxCommit(ctx, req.Msg.SignedTransaction)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&v1.SendTransactionResponse{
+		TxHash: res.Hash.String(),
+	}), nil
 }
 
 func NewChainService(config *config.Config, logger *zap.Logger, node *node.Node) *ChainService {

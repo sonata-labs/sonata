@@ -37,6 +37,11 @@ message GetTransactionResponse {
   cometbft.types.v1.TxProof proof = 6;
 }
 
-message SendTransactionRequest {}
+message SendTransactionRequest {
+  // The signed transaction is the serialized signed transaction.
+  bytes signed_transaction = 1;
+}
 
-message SendTransactionResponse {}
+message SendTransactionResponse {
+  string tx_hash = 1;
+}
