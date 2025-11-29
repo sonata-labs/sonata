@@ -113,13 +113,13 @@ type ChainStoreConfig struct {
 func DefaultChainStoreConfig() *ChainStoreConfig {
 	return &ChainStoreConfig{
 		Root: DefaultHomeDirPath(),
-		Path: filepath.Join(DefaultHomeDirPath(), "chainstore"),
+		Path: filepath.Join(DefaultHomeDirPath(), "data", "chainstore.db"),
 	}
 }
 
 func (c *ChainStoreConfig) SetRoot(root string) {
 	c.Root = root
-	c.Path = filepath.Join(root, "chainstore")
+	c.Path = filepath.Join(root, "data", "chainstore.db")
 }
 
 type LocalStoreConfig struct {
@@ -130,13 +130,13 @@ type LocalStoreConfig struct {
 func DefaultLocalStoreConfig() *LocalStoreConfig {
 	return &LocalStoreConfig{
 		Root: DefaultHomeDirPath(),
-		Path: filepath.Join(DefaultHomeDirPath(), "localstore"),
+		Path: filepath.Join(DefaultHomeDirPath(), "data", "local.db"),
 	}
 }
 
 func (c *LocalStoreConfig) SetRoot(root string) {
 	c.Root = root
-	c.Path = filepath.Join(root, "localstore")
+	c.Path = filepath.Join(root, "data", "local.db")
 }
 
 // SaveAs writes the SonataConfig to the specified file path as TOML.

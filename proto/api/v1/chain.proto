@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package api.v1;
 
-import "cometbft/types/v1beta1/block.proto";
-import "cometbft/types/v1beta1/types.proto";
+import "cometbft/abci/v1/types.proto";
+import "cometbft/types/v1/block.proto";
+import "cometbft/types/v1/types.proto";
 
 option go_package = "github.com/sonata-labs/sonata/gen/api/v1";
 
@@ -18,17 +19,22 @@ message GetBlockRequest {
 }
 
 message GetBlockResponse {
-  cometbft.types.v1beta1.Block block = 1;
+  cometbft.types.v1.Block block = 1;
+  cometbft.types.v1.BlockMeta block_meta = 2;
 }
 
 message GetTransactionRequest {
-  bytes tx_hash = 1;
+  string tx_hash = 1;
   bool prove = 2;
 }
 
 message GetTransactionResponse {
-  bytes tx = 1;
-  cometbft.types.v1beta1.TxProof proof = 2;
+  string tx_hash = 1;
+  int64 height = 2;
+  uint32 index = 3;
+  cometbft.abci.v1.ExecTxResult tx_result = 4;
+  bytes tx = 5;
+  cometbft.types.v1.TxProof proof = 6;
 }
 
 message SendTransactionRequest {}

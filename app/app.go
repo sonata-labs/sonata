@@ -23,6 +23,7 @@ import (
 	"github.com/sonata-labs/sonata/x/ddex"
 	"github.com/sonata-labs/sonata/x/p2p"
 	"github.com/sonata-labs/sonata/x/server"
+	"github.com/sonata-labs/sonata/x/statesync"
 	"github.com/sonata-labs/sonata/x/storage"
 	"github.com/sonata-labs/sonata/x/system"
 	"github.com/sonata-labs/sonata/x/validator"
@@ -46,6 +47,7 @@ type App struct {
 	composition *composition.CompositionService
 	account     *account.AccountService
 	validator   *validator.ValidatorService
+	statesync   *statesync.StateSyncService
 
 	chainStore chainstore.ChainStore
 	localStore localstore.LocalStore
@@ -54,15 +56,6 @@ type App struct {
 // Creates and initializes all modules and the app
 func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 	appLogger := zapLogger.Named("app").Sugar()
-
-	chainSvc := chain.NewChainService(cfg, zapLogger)
-	storageSvc := storage.NewStorageService(cfg, zapLogger)
-	systemSvc := system.NewSystemService(cfg, zapLogger)
-	p2pSvc := p2p.NewP2PService(cfg, zapLogger)
-	ddexSvc := ddex.NewDDEXService(cfg, zapLogger)
-	compositionSvc := composition.NewCompositionService(cfg, zapLogger)
-	accountSvc := account.NewAccountService(cfg, zapLogger)
-	validatorSvc := validator.NewValidatorService(cfg, zapLogger)
 
 	chainStore, err := pebble_chainstore.NewPebbleChainStore(cfg.Sonata.ChainStore.Path)
 	if err != nil {
@@ -99,10 +92,32 @@ func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 			cmtnm.DefaultMetricsProvider(cmtConfig.Instrumentation), cmtLogger)
 	}
 
-	coreSvc, node, err := core.NewCore(cfg, zapLogger, createNode, chainSvc, storageSvc, systemSvc, p2pSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
+	coreSvc, node, err := core.NewCore(cfg, zapLogger, createNode)
 	if err != nil {
 		return nil, err
 	}
+
+	chainSvc := chain.NewChainService(cfg, zapLogger, node)
+	storageSvc := storage.NewStorageService(cfg, zapLogger)
+	systemSvc := system.NewSystemService(cfg, zapLogger)
+	p2pSvc := p2p.NewP2PService(cfg, zapLogger)
+	ddexSvc := ddex.NewDDEXService(cfg, zapLogger)
+	compositionSvc := composition.NewCompositionService(cfg, zapLogger)
+	accountSvc := account.NewAccountService(cfg, zapLogger)
+	validatorSvc := validator.NewValidatorService(cfg, zapLogger)
+	statesyncSvc := statesync.NewStateSyncService(cfg, zapLogger, chainStore)
+
+	coreSvc.RegisterModules(core.InitChainCallback, chainSvc)
+	coreSvc.RegisterModules(core.CheckTxCallback, chainSvc, accountSvc, ddexSvc, storageSvc, compositionSvc, validatorSvc)
+	coreSvc.RegisterModules(core.PrepareProposalCallback, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
+	coreSvc.RegisterModules(core.ProcessProposalCallback, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
+	coreSvc.RegisterModules(core.FinalizeBlockCallback, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc, statesyncSvc)
+	coreSvc.RegisterModules(core.CommitCallback, chainSvc, statesyncSvc)
+
+	coreSvc.RegisterModules(core.ListSnapshotsCallback, statesyncSvc)
+	coreSvc.RegisterModules(core.OfferSnapshotCallback, statesyncSvc)
+	coreSvc.RegisterModules(core.LoadSnapshotChunkCallback, statesyncSvc)
+	coreSvc.RegisterModules(core.ApplySnapshotChunkCallback, statesyncSvc)
 
 	serverSvc, err := server.NewServer(cfg, zapLogger, chainSvc, storageSvc, systemSvc, p2pSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
 	if err != nil {
@@ -124,6 +139,7 @@ func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 		composition: compositionSvc,
 		account:     accountSvc,
 		validator:   validatorSvc,
+		statesync:   statesyncSvc,
 
 		chainStore: chainStore,
 		localStore: localStore,
@@ -144,6 +160,7 @@ func (app *App) Run(ctx context.Context) error {
 	eg.Go(app.storage.Start)
 	eg.Go(app.system.Start)
 	eg.Go(app.p2p.Start)
+	eg.Go(app.statesync.Start)
 
 	eg.Go(func() error {
 		<-ctx.Done()
@@ -172,6 +189,7 @@ func (app *App) Shutdown() error {
 	eg.Go(app.storage.Stop)
 	eg.Go(app.system.Stop)
 	eg.Go(app.p2p.Stop)
+	eg.Go(app.statesync.Stop)
 
 	return eg.Wait()
 }

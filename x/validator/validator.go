@@ -3,6 +3,7 @@ package validator
 import (
 	"context"
 
+	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"connectrpc.com/connect"
 	"github.com/sonata-labs/sonata/config"
 	v1 "github.com/sonata-labs/sonata/gen/api/v1"
@@ -34,4 +35,26 @@ func NewValidatorService(config *config.Config, logger *zap.Logger) *ValidatorSe
 	svc := &ValidatorService{config: config}
 	svc.BaseModule = module.NewBaseModule(logger.Named(svc.Name()))
 	return svc
+}
+
+// ABCI++ Callbacks
+
+func (v *ValidatorService) CheckTx(ctx context.Context, req *abcitypes.CheckTxRequest) (*abcitypes.CheckTxResponse, error) {
+	v.Logger.Info("checking tx")
+	return &abcitypes.CheckTxResponse{}, nil
+}
+
+func (v *ValidatorService) PrepareProposal(ctx context.Context, req *abcitypes.PrepareProposalRequest) (*abcitypes.PrepareProposalResponse, error) {
+	v.Logger.Info("preparing proposal")
+	return &abcitypes.PrepareProposalResponse{}, nil
+}
+
+func (v *ValidatorService) ProcessProposal(ctx context.Context, req *abcitypes.ProcessProposalRequest) (*abcitypes.ProcessProposalResponse, error) {
+	v.Logger.Info("processing proposal")
+	return &abcitypes.ProcessProposalResponse{}, nil
+}
+
+func (v *ValidatorService) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRequest) (*abcitypes.FinalizeBlockResponse, error) {
+	v.Logger.Info("finalizing block")
+	return &abcitypes.FinalizeBlockResponse{}, nil
 }

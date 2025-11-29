@@ -3,6 +3,7 @@ package composition
 import (
 	"context"
 
+	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"connectrpc.com/connect"
 	"github.com/sonata-labs/sonata/config"
 	v1 "github.com/sonata-labs/sonata/gen/api/v1"
@@ -30,4 +31,26 @@ func NewCompositionService(config *config.Config, logger *zap.Logger) *Compositi
 	svc := &CompositionService{config: config}
 	svc.BaseModule = module.NewBaseModule(logger.Named(svc.Name()))
 	return svc
+}
+
+// ABCI++ Callbacks
+
+func (c *CompositionService) CheckTx(ctx context.Context, req *abcitypes.CheckTxRequest) (*abcitypes.CheckTxResponse, error) {
+	c.Logger.Info("checking tx")
+	return &abcitypes.CheckTxResponse{}, nil
+}
+
+func (c *CompositionService) PrepareProposal(ctx context.Context, req *abcitypes.PrepareProposalRequest) (*abcitypes.PrepareProposalResponse, error) {
+	c.Logger.Info("preparing proposal")
+	return &abcitypes.PrepareProposalResponse{}, nil
+}
+
+func (c *CompositionService) ProcessProposal(ctx context.Context, req *abcitypes.ProcessProposalRequest) (*abcitypes.ProcessProposalResponse, error) {
+	c.Logger.Info("processing proposal")
+	return &abcitypes.ProcessProposalResponse{}, nil
+}
+
+func (c *CompositionService) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRequest) (*abcitypes.FinalizeBlockResponse, error) {
+	c.Logger.Info("finalizing block")
+	return &abcitypes.FinalizeBlockResponse{}, nil
 }

@@ -3,6 +3,7 @@ package ddex
 import (
 	"context"
 
+	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"connectrpc.com/connect"
 	"github.com/sonata-labs/sonata/config"
 	v1 "github.com/sonata-labs/sonata/gen/api/v1"
@@ -52,4 +53,26 @@ func NewDDEXService(config *config.Config, logger *zap.Logger) *DDEXService {
 	svc := &DDEXService{config: config}
 	svc.BaseModule = module.NewBaseModule(logger.Named(svc.Name()))
 	return svc
+}
+
+// ABCI++ Callbacks
+
+func (d *DDEXService) CheckTx(ctx context.Context, req *abcitypes.CheckTxRequest) (*abcitypes.CheckTxResponse, error) {
+	d.Logger.Info("checking tx")
+	return &abcitypes.CheckTxResponse{}, nil
+}
+
+func (d *DDEXService) PrepareProposal(ctx context.Context, req *abcitypes.PrepareProposalRequest) (*abcitypes.PrepareProposalResponse, error) {
+	d.Logger.Info("preparing proposal")
+	return &abcitypes.PrepareProposalResponse{}, nil
+}
+
+func (d *DDEXService) ProcessProposal(ctx context.Context, req *abcitypes.ProcessProposalRequest) (*abcitypes.ProcessProposalResponse, error) {
+	d.Logger.Info("processing proposal")
+	return &abcitypes.ProcessProposalResponse{}, nil
+}
+
+func (d *DDEXService) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRequest) (*abcitypes.FinalizeBlockResponse, error) {
+	d.Logger.Info("finalizing block")
+	return &abcitypes.FinalizeBlockResponse{}, nil
 }
