@@ -61,12 +61,12 @@ func NewApp(config *config.Config) (*App, error) {
 	account := account.NewAccountService(config)
 	validator := validator.NewValidatorService(config)
 
-	chainStore, err := pebble_chainstore.NewPebbleChainStore(config.ChainStore.Path)
+	chainStore, err := pebble_chainstore.NewPebbleChainStore(config.Sonata.ChainStore.Path)
 	if err != nil {
 		return nil, err
 	}
 
-	localStore, err := pebble_localstore.NewPebbleLocalStore(config.LocalStore.Path)
+	localStore, err := pebble_localstore.NewPebbleLocalStore(config.Sonata.LocalStore.Path)
 	if err != nil {
 		return nil, err
 	}

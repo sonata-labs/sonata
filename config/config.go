@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/cometbft/cometbft/config"
+	"github.com/pelletier/go-toml/v2"
 )
 
 const (
@@ -20,20 +21,14 @@ func DefaultHomeDirPath() string {
 }
 
 type Config struct {
-	HTTP       *HTTPConfig
-	Socket     *SocketConfig
-	ChainStore *ChainStoreConfig
-	LocalStore *LocalStoreConfig
-	CometBFT   *config.Config
+	Sonata   *SonataConfig
+	CometBFT *config.Config
 }
 
 func DefaultConfig() *Config {
 	return &Config{
-		HTTP:       DefaultHTTPConfig(),
-		Socket:     DefaultSocketConfig(),
-		ChainStore: DefaultChainStoreConfig(),
-		LocalStore: DefaultLocalStoreConfig(),
-		CometBFT:   config.DefaultConfig(),
+		Sonata:   DefaultSonataConfig(),
+		CometBFT: config.DefaultConfig(),
 	}
 }
 
@@ -42,16 +37,44 @@ func (c *Config) ValidateBasic() error {
 }
 
 func (c *Config) SetRoot(root string) {
-	c.HTTP.Root = root
-	c.Socket.Root = root
-	c.ChainStore.Root = root
-	c.LocalStore.Root = root
+	c.Sonata.SetRoot(root)
+	c.CometBFT.SetRoot(root)
+}
+
+type SonataConfig struct {
+	Root       string            `mapstructure:"root" toml:"root"`
+	HTTP       *HTTPConfig       `mapstructure:"http" toml:"http"`
+	Socket     *SocketConfig     `mapstructure:"socket" toml:"socket"`
+	ChainStore *ChainStoreConfig `mapstructure:"chainstore" toml:"chainstore"`
+	LocalStore *LocalStoreConfig `mapstructure:"localstore" toml:"localstore"`
+}
+
+func DefaultSonataConfig() *SonataConfig {
+	return &SonataConfig{
+		Root:       DefaultHomeDirPath(),
+		HTTP:       DefaultHTTPConfig(),
+		Socket:     DefaultSocketConfig(),
+		ChainStore: DefaultChainStoreConfig(),
+		LocalStore: DefaultLocalStoreConfig(),
+	}
+}
+
+func (c *SonataConfig) ValidateBasic() error {
+	return nil
+}
+
+func (c *SonataConfig) SetRoot(root string) {
+	c.Root = root
+	c.HTTP.SetRoot(root)
+	c.Socket.SetRoot(root)
+	c.ChainStore.SetRoot(root)
+	c.LocalStore.SetRoot(root)
 }
 
 type HTTPConfig struct {
-	Root string
-	Host string
-	Port int
+	Root string `mapstructure:"root" toml:"root"`
+	Host string `mapstructure:"host" toml:"host"`
+	Port int    `mapstructure:"port" toml:"port"`
 }
 
 func DefaultHTTPConfig() *HTTPConfig {
@@ -62,9 +85,13 @@ func DefaultHTTPConfig() *HTTPConfig {
 	}
 }
 
+func (c *HTTPConfig) SetRoot(root string) {
+	c.Root = root
+}
+
 type SocketConfig struct {
-	Root string
-	Path string
+	Root string `mapstructure:"root" toml:"root"`
+	Path string `mapstructure:"path" toml:"path"`
 }
 
 func DefaultSocketConfig() *SocketConfig {
@@ -74,9 +101,13 @@ func DefaultSocketConfig() *SocketConfig {
 	}
 }
 
+func (c *SocketConfig) SetRoot(root string) {
+	c.Root = root
+}
+
 type ChainStoreConfig struct {
-	Root string
-	Path string
+	Root string `mapstructure:"root" toml:"root"`
+	Path string `mapstructure:"path" toml:"path"`
 }
 
 func DefaultChainStoreConfig() *ChainStoreConfig {
@@ -86,9 +117,14 @@ func DefaultChainStoreConfig() *ChainStoreConfig {
 	}
 }
 
+func (c *ChainStoreConfig) SetRoot(root string) {
+	c.Root = root
+	c.Path = filepath.Join(root, "chainstore")
+}
+
 type LocalStoreConfig struct {
-	Root string
-	Path string
+	Root string `mapstructure:"root" toml:"root"`
+	Path string `mapstructure:"path" toml:"path"`
 }
 
 func DefaultLocalStoreConfig() *LocalStoreConfig {
@@ -96,4 +132,18 @@ func DefaultLocalStoreConfig() *LocalStoreConfig {
 		Root: DefaultHomeDirPath(),
 		Path: filepath.Join(DefaultHomeDirPath(), "localstore"),
 	}
+}
+
+func (c *LocalStoreConfig) SetRoot(root string) {
+	c.Root = root
+	c.Path = filepath.Join(root, "localstore")
+}
+
+// SaveAs writes the SonataConfig to the specified file path as TOML.
+func (c *SonataConfig) SaveAs(filePath string) error {
+	data, err := toml.Marshal(c)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filePath, data, 0o644)
 }

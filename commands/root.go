@@ -19,6 +19,7 @@ func NewRootCommand() *cobra.Command {
 
 	root.PersistentFlags().String("home", config.DefaultHomeDirPath(), "home directory (default is $HOME/.sonata)")
 
+	root.AddCommand(NewInitCommand())
 	root.AddCommand(NewStartCommand())
 
 	return root

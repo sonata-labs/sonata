@@ -25,12 +25,14 @@ func ReadConfig(homeDir string) (*Config, error) {
 		return nil, fmt.Errorf("reading cometbft config: %w", err)
 	}
 
-	sonataConfig.CometBFT = cmtConfig
-	return sonataConfig, nil
+	return &Config{
+		Sonata:   sonataConfig,
+		CometBFT: cmtConfig,
+	}, nil
 }
 
-func ReadSonataConfig(homeDir string) (*Config, error) {
-	sonataConfig := DefaultConfig()
+func ReadSonataConfig(homeDir string) (*SonataConfig, error) {
+	sonataConfig := DefaultSonataConfig()
 	sonataConfig.SetRoot(homeDir)
 
 	v := viper.New()

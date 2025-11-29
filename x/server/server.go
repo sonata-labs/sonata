@@ -49,7 +49,7 @@ func NewServer(config *config.Config, chain v1connect.ChainHandler, storage v1co
 func (s *Server) Start() error {
 	s.registerRoutes()
 
-	address := fmt.Sprintf("%s:%d", s.config.HTTP.Host, s.config.HTTP.Port)
+	address := fmt.Sprintf("%s:%d", s.config.Sonata.HTTP.Host, s.config.Sonata.HTTP.Port)
 	return s.httpServer.Start(address)
 }
 
