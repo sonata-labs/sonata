@@ -1,0 +1,7 @@
+Compositions are arbitrary logic that gets deployed to sonata, similar to smart contracts. There are two classes of compositions. They are written in Javascript and executed in a sandboxed environment using goja.
+
+There are basic limitations around what a composition can do. It can't make network calls nor have any non deterministic operations (randomness). They will also be restricted to a certain amount of operation time and in the future subject to fees/gas.
+
+A **write** composition: this is a composition that gets deployed against an ERN by the ERN's owner. There is only one per ERN in the initial version of Sonata. This composition allows the sender to intake the existing form of an ERN and the proposed new version and in their script provide arbitrary logic to gate modification access. For example, the sender of the ERN can allow modification access to a specific party in the ERN only if the sender of the ERN is a particular address.
+
+A **read** composition: this is an early form of the agnostic attestation mechanism of sonata. Say you need to prove that at a certain point in time that you had access to a track, a composition can build that proof while also obtaining a signature from the validator. This allows you stateless verification of sonata data off chain for any purpose you may have. 

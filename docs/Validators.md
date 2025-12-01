@@ -1,0 +1,7 @@
+The validator set of Sonata is set up differently than other classic L1s. Typically to become a validator on a chain the process is conceptually simple and usually involves staking some amount of token (eth, solana, audius all do this). Sonata however is different. The music industry works differently. No one should be able to effectively buy their way into being a validator for a system like this. The tech is simply not there yet to fully encrypt the content while also giving the validators the ability to pass decryption allowances down to users. In the classic validator scenario the price of leaking part of the catalog is always the price of becoming a validator. 
+
+Sonata is designed with a more social and potentially rigorous process to becoming a validator. A simple API is exposed in the validator service but the intent is that more social vetting is done before a new validator acquires enough votes from the existing validator set. 
+
+For example, validators should be known to the community and trusted. In order for a validator to be introduced they must earn the votes from the existing validators, and by proxy the community. This can be extrapolated on top of the existing API to as far as necessary. Even democratic style elections are possible.
+
+Validators may still require stake like most chains but they also need to fulfill whatever other social component a specific sonata chain has in place. This makes being a slow or malicious validator a lot more costly and difficult to obtain.
