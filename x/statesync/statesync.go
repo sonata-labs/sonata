@@ -17,10 +17,10 @@ type StateSyncService struct {
 	config *config.Config
 	logger *zap.Logger
 
-	chainStore chainstore.ChainStore
+	chainStore *chainstore.ChainStore
 }
 
-func NewStateSyncService(config *config.Config, logger *zap.Logger, chainStore chainstore.ChainStore) *StateSyncService {
+func NewStateSyncService(config *config.Config, logger *zap.Logger, chainStore *chainstore.ChainStore) *StateSyncService {
 	svc := &StateSyncService{
 		config:     config,
 		logger:     logger,

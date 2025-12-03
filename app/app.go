@@ -14,9 +14,7 @@ import (
 	"github.com/sonata-labs/sonata/config"
 	"github.com/sonata-labs/sonata/core"
 	"github.com/sonata-labs/sonata/store/chainstore"
-	pebble_chainstore "github.com/sonata-labs/sonata/store/chainstore/pebble"
 	"github.com/sonata-labs/sonata/store/localstore"
-	pebble_localstore "github.com/sonata-labs/sonata/store/localstore/pebble"
 	"github.com/sonata-labs/sonata/x/account"
 	"github.com/sonata-labs/sonata/x/chain"
 	"github.com/sonata-labs/sonata/x/composition"
@@ -49,20 +47,20 @@ type App struct {
 	validator   *validator.ValidatorService
 	statesync   *statesync.StateSyncService
 
-	chainStore chainstore.ChainStore
-	localStore localstore.LocalStore
+	chainStore *chainstore.ChainStore
+	localStore *localstore.LocalStore
 }
 
 // Creates and initializes all modules and the app
 func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 	appLogger := zapLogger.Named("app").Sugar()
 
-	chainStore, err := pebble_chainstore.NewPebbleChainStore(cfg.Sonata.ChainStore.Path)
+	chainStore, err := chainstore.NewChainStore(cfg.Sonata.ChainStore.Path)
 	if err != nil {
 		return nil, err
 	}
 
-	localStore, err := pebble_localstore.NewPebbleLocalStore(cfg.Sonata.LocalStore.Path)
+	localStore, err := localstore.NewLocalStore(cfg.Sonata.LocalStore.Path)
 	if err != nil {
 		return nil, err
 	}
@@ -107,17 +105,17 @@ func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 	validatorSvc := validator.NewValidatorService(cfg, zapLogger)
 	statesyncSvc := statesync.NewStateSyncService(cfg, zapLogger, chainStore)
 
-	coreSvc.RegisterModules(core.InitChainCallback, chainSvc)
-	coreSvc.RegisterModules(core.CheckTxCallback, chainSvc, accountSvc, ddexSvc, storageSvc, compositionSvc, validatorSvc)
-	coreSvc.RegisterModules(core.PrepareProposalCallback, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
-	coreSvc.RegisterModules(core.ProcessProposalCallback, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
-	coreSvc.RegisterModules(core.FinalizeBlockCallback, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc, statesyncSvc)
-	coreSvc.RegisterModules(core.CommitCallback, chainSvc, statesyncSvc)
+	coreSvc.RegisterModules(core.InitChain, chainSvc)
+	coreSvc.RegisterModules(core.CheckTx, chainSvc, accountSvc, ddexSvc, storageSvc, compositionSvc, validatorSvc)
+	coreSvc.RegisterModules(core.PrepareProposal, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
+	coreSvc.RegisterModules(core.ProcessProposal, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
+	coreSvc.RegisterModules(core.FinalizeBlock, chainSvc, storageSvc, systemSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc, statesyncSvc)
+	coreSvc.RegisterModules(core.Commit, chainSvc, statesyncSvc)
 
-	coreSvc.RegisterModules(core.ListSnapshotsCallback, statesyncSvc)
-	coreSvc.RegisterModules(core.OfferSnapshotCallback, statesyncSvc)
-	coreSvc.RegisterModules(core.LoadSnapshotChunkCallback, statesyncSvc)
-	coreSvc.RegisterModules(core.ApplySnapshotChunkCallback, statesyncSvc)
+	coreSvc.RegisterModules(core.ListSnapshots, statesyncSvc)
+	coreSvc.RegisterModules(core.OfferSnapshot, statesyncSvc)
+	coreSvc.RegisterModules(core.LoadSnapshotChunk, statesyncSvc)
+	coreSvc.RegisterModules(core.ApplySnapshotChunk, statesyncSvc)
 
 	serverSvc, err := server.NewServer(cfg, zapLogger, chainSvc, storageSvc, systemSvc, p2pSvc, ddexSvc, compositionSvc, accountSvc, validatorSvc)
 	if err != nil {

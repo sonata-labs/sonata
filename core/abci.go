@@ -15,20 +15,20 @@ import (
 type Callback int
 
 const (
-	InfoCallback Callback = iota
-	QueryCallback
-	CheckTxCallback
-	InitChainCallback
-	PrepareProposalCallback
-	ProcessProposalCallback
-	FinalizeBlockCallback
-	ExtendVoteCallback
-	VerifyVoteExtensionCallback
-	CommitCallback
-	ListSnapshotsCallback
-	OfferSnapshotCallback
-	LoadSnapshotChunkCallback
-	ApplySnapshotChunkCallback
+	Info Callback = iota
+	Query
+	CheckTx
+	InitChain
+	PrepareProposal
+	ProcessProposal
+	FinalizeBlock
+	ExtendVote
+	VerifyVoteExtension
+	Commit
+	ListSnapshots
+	OfferSnapshot
+	LoadSnapshotChunk
+	ApplySnapshotChunk
 )
 
 type Core struct {
@@ -143,7 +143,7 @@ func (c *Core) Stop() error {
 
 func (c *Core) Info(ctx context.Context, req *abcitypes.InfoRequest) (*abcitypes.InfoResponse, error) {
 	var lastResp *abcitypes.InfoResponse
-	for _, mod := range c.modules[InfoCallback] {
+	for _, mod := range c.modules[Info] {
 		resp, err := mod.Info(ctx, req)
 		if err != nil {
 			return nil, err
@@ -157,7 +157,7 @@ func (c *Core) Info(ctx context.Context, req *abcitypes.InfoRequest) (*abcitypes
 }
 
 func (c *Core) Query(ctx context.Context, req *abcitypes.QueryRequest) (*abcitypes.QueryResponse, error) {
-	for _, mod := range c.modules[QueryCallback] {
+	for _, mod := range c.modules[Query] {
 		resp, err := mod.Query(ctx, req)
 		if err != nil {
 			return nil, err
@@ -173,7 +173,7 @@ func (c *Core) Query(ctx context.Context, req *abcitypes.QueryRequest) (*abcityp
 // Mempool Connection
 
 func (c *Core) CheckTx(ctx context.Context, req *abcitypes.CheckTxRequest) (*abcitypes.CheckTxResponse, error) {
-	for _, mod := range c.modules[CheckTxCallback] {
+	for _, mod := range c.modules[CheckTx] {
 		resp, err := mod.CheckTx(ctx, req)
 		if err != nil {
 			return nil, err
@@ -192,7 +192,7 @@ func (c *Core) InitChain(ctx context.Context, req *abcitypes.InitChainRequest) (
 	var validators []abcitypes.ValidatorUpdate
 	var appHash []byte
 
-	for _, mod := range c.modules[InitChainCallback] {
+	for _, mod := range c.modules[InitChain] {
 		resp, err := mod.InitChain(ctx, req)
 		if err != nil {
 			return nil, err
@@ -216,7 +216,7 @@ func (c *Core) InitChain(ctx context.Context, req *abcitypes.InitChainRequest) (
 func (c *Core) PrepareProposal(ctx context.Context, req *abcitypes.PrepareProposalRequest) (*abcitypes.PrepareProposalResponse, error) {
 	txs := req.Txs
 
-	for _, mod := range c.modules[PrepareProposalCallback] {
+	for _, mod := range c.modules[PrepareProposal] {
 		resp, err := mod.PrepareProposal(ctx, req)
 		if err != nil {
 			return nil, err
@@ -230,7 +230,7 @@ func (c *Core) PrepareProposal(ctx context.Context, req *abcitypes.PreparePropos
 }
 
 func (c *Core) ProcessProposal(ctx context.Context, req *abcitypes.ProcessProposalRequest) (*abcitypes.ProcessProposalResponse, error) {
-	for _, mod := range c.modules[ProcessProposalCallback] {
+	for _, mod := range c.modules[ProcessProposal] {
 		resp, err := mod.ProcessProposal(ctx, req)
 		if err != nil {
 			return nil, err
@@ -249,7 +249,7 @@ func (c *Core) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRe
 	var events []abcitypes.Event
 	var appHash []byte
 
-	for _, mod := range c.modules[FinalizeBlockCallback] {
+	for _, mod := range c.modules[FinalizeBlock] {
 		resp, err := mod.FinalizeBlock(ctx, req)
 		if err != nil {
 			return nil, err
@@ -283,7 +283,7 @@ func (c *Core) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRe
 func (c *Core) ExtendVote(ctx context.Context, req *abcitypes.ExtendVoteRequest) (*abcitypes.ExtendVoteResponse, error) {
 	var extension []byte
 
-	for _, mod := range c.modules[ExtendVoteCallback] {
+	for _, mod := range c.modules[ExtendVote] {
 		resp, err := mod.ExtendVote(ctx, req)
 		if err != nil {
 			return nil, err
@@ -297,7 +297,7 @@ func (c *Core) ExtendVote(ctx context.Context, req *abcitypes.ExtendVoteRequest)
 }
 
 func (c *Core) VerifyVoteExtension(ctx context.Context, req *abcitypes.VerifyVoteExtensionRequest) (*abcitypes.VerifyVoteExtensionResponse, error) {
-	for _, mod := range c.modules[VerifyVoteExtensionCallback] {
+	for _, mod := range c.modules[VerifyVoteExtension] {
 		resp, err := mod.VerifyVoteExtension(ctx, req)
 		if err != nil {
 			return nil, err
@@ -315,7 +315,7 @@ func (c *Core) VerifyVoteExtension(ctx context.Context, req *abcitypes.VerifyVot
 func (c *Core) Commit(ctx context.Context, req *abcitypes.CommitRequest) (*abcitypes.CommitResponse, error) {
 	var retainHeight int64
 
-	for _, mod := range c.modules[CommitCallback] {
+	for _, mod := range c.modules[Commit] {
 		resp, err := mod.Commit(ctx, req)
 		if err != nil {
 			return nil, err
@@ -333,7 +333,7 @@ func (c *Core) Commit(ctx context.Context, req *abcitypes.CommitRequest) (*abcit
 func (c *Core) ListSnapshots(ctx context.Context, req *abcitypes.ListSnapshotsRequest) (*abcitypes.ListSnapshotsResponse, error) {
 	var snapshots []*abcitypes.Snapshot
 
-	for _, mod := range c.modules[ListSnapshotsCallback] {
+	for _, mod := range c.modules[ListSnapshots] {
 		resp, err := mod.ListSnapshots(ctx, req)
 		if err != nil {
 			return nil, err
@@ -347,7 +347,7 @@ func (c *Core) ListSnapshots(ctx context.Context, req *abcitypes.ListSnapshotsRe
 }
 
 func (c *Core) OfferSnapshot(ctx context.Context, req *abcitypes.OfferSnapshotRequest) (*abcitypes.OfferSnapshotResponse, error) {
-	for _, mod := range c.modules[OfferSnapshotCallback] {
+	for _, mod := range c.modules[OfferSnapshot] {
 		resp, err := mod.OfferSnapshot(ctx, req)
 		if err != nil {
 			return nil, err
@@ -361,7 +361,7 @@ func (c *Core) OfferSnapshot(ctx context.Context, req *abcitypes.OfferSnapshotRe
 }
 
 func (c *Core) LoadSnapshotChunk(ctx context.Context, req *abcitypes.LoadSnapshotChunkRequest) (*abcitypes.LoadSnapshotChunkResponse, error) {
-	for _, mod := range c.modules[LoadSnapshotChunkCallback] {
+	for _, mod := range c.modules[LoadSnapshotChunk] {
 		resp, err := mod.LoadSnapshotChunk(ctx, req)
 		if err != nil {
 			return nil, err
@@ -375,7 +375,7 @@ func (c *Core) LoadSnapshotChunk(ctx context.Context, req *abcitypes.LoadSnapsho
 }
 
 func (c *Core) ApplySnapshotChunk(ctx context.Context, req *abcitypes.ApplySnapshotChunkRequest) (*abcitypes.ApplySnapshotChunkResponse, error) {
-	for _, mod := range c.modules[ApplySnapshotChunkCallback] {
+	for _, mod := range c.modules[ApplySnapshotChunk] {
 		resp, err := mod.ApplySnapshotChunk(ctx, req)
 		if err != nil {
 			return nil, err
