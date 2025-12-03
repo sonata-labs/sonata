@@ -101,7 +101,7 @@ func NewApp(cfg *config.Config, zapLogger *zap.Logger) (*App, error) {
 	p2pSvc := p2p.NewP2PService(cfg, zapLogger)
 	ddexSvc := ddex.NewDDEXService(cfg, zapLogger)
 	compositionSvc := composition.NewCompositionService(cfg, zapLogger)
-	accountSvc := account.NewAccountService(cfg, zapLogger)
+	accountSvc := account.NewAccountService(cfg, zapLogger, chainStore)
 	validatorSvc := validator.NewValidatorService(cfg, zapLogger)
 	statesyncSvc := statesync.NewStateSyncService(cfg, zapLogger, chainStore)
 

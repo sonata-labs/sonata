@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package chain.v1;
 
+import "chain/v1/account.proto";
 import "chain/v1/ddex.proto";
 
 option go_package = "github.com/sonata-labs/sonata/gen/chain/v1";
@@ -38,6 +39,7 @@ message TransactionBody {
     chain.v1.PieTransaction pie = 4;
     chain.v1.PieRequestTransaction pie_request = 5;
     chain.v1.MeadTransaction mead = 6;
+    chain.v1.CreateAccountTransaction create_account = 7;
   }
 }
 
@@ -49,5 +51,6 @@ message TransactionEvent {
     chain.v1.PieEvent pie = 4;
     chain.v1.PieRequestEvent pie_request = 5;
     chain.v1.MeadEvent mead = 6;
+    chain.v1.CreateAccountEvent create_account = 7;
   }
 }

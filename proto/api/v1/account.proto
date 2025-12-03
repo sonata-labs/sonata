@@ -2,13 +2,18 @@ syntax = "proto3";
 
 package api.v1;
 
+import "account/v1/v1.proto";
+
 option go_package = "github.com/sonata-labs/sonata/gen/api/v1";
 
 service Account {
   rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {}
 }
 
-message GetAccountRequest {}
+message GetAccountRequest {
+  string address = 1;
+}
 
-message GetAccountResponse {}
-
+message GetAccountResponse {
+  account.v1.Account account = 1;
+}

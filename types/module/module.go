@@ -5,12 +5,15 @@ import (
 	"sync"
 
 	abcitypes "github.com/cometbft/cometbft/abci/types"
+	"github.com/sonata-labs/sonata/store/chainstore"
 	"go.uber.org/zap"
 )
 
 type Module interface {
 	// Name of the module
 	Name() string
+
+	SetChainStoreBatch(store *chainstore.ChainStore)
 
 	// Startup dependency management
 	RegisterStartupDeps(deps ...<-chan struct{})
@@ -33,11 +36,12 @@ type Module interface {
 var _ Module = (*BaseModule)(nil)
 
 type BaseModule struct {
-	Logger       *zap.SugaredLogger
-	ready        chan struct{}
-	startupDeps  []<-chan struct{}
-	stopped      chan struct{}
-	shutdownDeps []<-chan struct{}
+	Logger          *zap.SugaredLogger
+	ChainStoreBatch *chainstore.ChainStore
+	ready           chan struct{}
+	startupDeps     []<-chan struct{}
+	stopped         chan struct{}
+	shutdownDeps    []<-chan struct{}
 }
 
 func NewBaseModule(logger *zap.Logger) *BaseModule {
@@ -50,6 +54,10 @@ func NewBaseModule(logger *zap.Logger) *BaseModule {
 
 func (m *BaseModule) Name() string {
 	return ""
+}
+
+func (m *BaseModule) SetChainStoreBatch(store *chainstore.ChainStore) {
+	m.ChainStoreBatch = store
 }
 
 func (m *BaseModule) RegisterStartupDeps(deps ...<-chan struct{}) {

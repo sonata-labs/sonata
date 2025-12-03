@@ -7,6 +7,7 @@ require (
 	github.com/cockroachdb/pebble v1.1.2
 	github.com/cometbft/cometbft v1.0.1
 	github.com/cometbft/cometbft/api v1.0.0
+	github.com/cosmos/gogoproto v1.7.0
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/pelletier/go-toml/v2 v2.2.2
 	github.com/sonata-labs/ddex-proto v0.1.0
@@ -27,7 +28,6 @@ require (
 	github.com/cockroachdb/redact v1.1.5 // indirect
 	github.com/cockroachdb/tokenbucket v0.0.0-20230807174530-cc333fc44b06 // indirect
 	github.com/cometbft/cometbft-db v1.0.1 // indirect
-	github.com/cosmos/gogoproto v1.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
 	github.com/dgraph-io/badger/v4 v4.5.1 // indirect

@@ -7,6 +7,7 @@ import (
 	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/node"
 	"github.com/sonata-labs/sonata/config"
+	"github.com/sonata-labs/sonata/store/chainstore"
 	"github.com/sonata-labs/sonata/types/module"
 	"go.uber.org/zap"
 )
@@ -32,14 +33,18 @@ const (
 )
 
 type Core struct {
-	config       *config.Config
-	modules      map[Callback][]module.Module
-	node         *node.Node
-	logger       *zap.SugaredLogger
+	config  *config.Config
+	modules map[Callback][]module.Module
+	node    *node.Node
+	logger  *zap.SugaredLogger
+
 	ready        chan struct{}
 	startupDeps  []<-chan struct{}
 	stopped      chan struct{}
 	shutdownDeps []<-chan struct{}
+
+	chainStore *chainstore.ChainStore
+	batch      *chainstore.ChainStore
 }
 
 func NewCore(config *config.Config, logger *zap.Logger, init func(c *Core) (*node.Node, error)) (*Core, *node.Node, error) {
@@ -70,6 +75,8 @@ var _ module.Module = (*Core)(nil)
 func (c *Core) Name() string {
 	return "core"
 }
+
+func (c *Core) SetChainStoreBatch(store *chainstore.ChainStore) {}
 
 func (c *Core) RegisterStartupDeps(deps ...<-chan struct{}) {
 	c.startupDeps = append(c.startupDeps, deps...)
@@ -248,8 +255,11 @@ func (c *Core) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRe
 	var validators []abcitypes.ValidatorUpdate
 	var events []abcitypes.Event
 	var appHash []byte
+	c.batch = c.chainStore.Batch()
 
 	for _, mod := range c.modules[FinalizeBlock] {
+		// set module chain store to the core controlled batch
+		mod.SetChainStoreBatch(c.batch)
 		resp, err := mod.FinalizeBlock(ctx, req)
 		if err != nil {
 			return nil, err
@@ -323,6 +333,11 @@ func (c *Core) Commit(ctx context.Context, req *abcitypes.CommitRequest) (*abcit
 		if resp != nil && resp.RetainHeight > retainHeight {
 			retainHeight = resp.RetainHeight
 		}
+	}
+
+	// commit the batch from all modules
+	if err := c.batch.Commit(); err != nil {
+		return nil, err
 	}
 
 	return &abcitypes.CommitResponse{RetainHeight: retainHeight}, nil

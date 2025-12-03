@@ -2,18 +2,23 @@ package account
 
 import (
 	"context"
+	"errors"
 
-	abcitypes "github.com/cometbft/cometbft/abci/types"
 	"connectrpc.com/connect"
+	abcitypes "github.com/cometbft/cometbft/abci/types"
+	"github.com/cosmos/gogoproto/proto"
 	"github.com/sonata-labs/sonata/config"
 	v1 "github.com/sonata-labs/sonata/gen/api/v1"
 	"github.com/sonata-labs/sonata/gen/api/v1/v1connect"
+	chainv1 "github.com/sonata-labs/sonata/gen/chain/v1"
+	"github.com/sonata-labs/sonata/store/chainstore"
 	"github.com/sonata-labs/sonata/types/module"
 	"go.uber.org/zap"
 )
 
 type AccountService struct {
 	*module.BaseModule
+	store  *chainstore.ChainStore
 	config *config.Config
 }
 
@@ -23,14 +28,24 @@ func (a *AccountService) Name() string {
 
 var _ module.Module = (*AccountService)(nil)
 
-func (a *AccountService) GetAccount(context.Context, *connect.Request[v1.GetAccountRequest]) (*connect.Response[v1.GetAccountResponse], error) {
-	panic("unimplemented")
+func (a *AccountService) GetAccount(ctx context.Context, req *connect.Request[v1.GetAccountRequest]) (*connect.Response[v1.GetAccountResponse], error) {
+	address := req.Msg.Address
+	if address == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("address is required"))
+	}
+
+	account, err := a.store.GetAccount(address)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeNotFound, err)
+	}
+
+	return connect.NewResponse(&v1.GetAccountResponse{Account: account}), nil
 }
 
 var _ v1connect.AccountHandler = (*AccountService)(nil)
 
-func NewAccountService(config *config.Config, logger *zap.Logger) *AccountService {
-	svc := &AccountService{config: config}
+func NewAccountService(config *config.Config, logger *zap.Logger, store *chainstore.ChainStore) *AccountService {
+	svc := &AccountService{config: config, store: store}
 	svc.BaseModule = module.NewBaseModule(logger.Named(svc.Name()))
 	return svc
 }
@@ -54,5 +69,21 @@ func (a *AccountService) ProcessProposal(ctx context.Context, req *abcitypes.Pro
 
 func (a *AccountService) FinalizeBlock(ctx context.Context, req *abcitypes.FinalizeBlockRequest) (*abcitypes.FinalizeBlockResponse, error) {
 	a.Logger.Info("finalizing block")
+
+	for _, tx := range req.Txs {
+		var signedTransaction chainv1.SignedTransaction
+		err := proto.Unmarshal(tx, &signedTransaction)
+		if err != nil {
+			return nil, err
+		}
+
+		if account := signedTransaction.Transaction.Body.GetCreateAccount(); account != nil {
+			err = a.ChainStoreBatch.StoreAccount(account.Account)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
 	return &abcitypes.FinalizeBlockResponse{}, nil
 }
