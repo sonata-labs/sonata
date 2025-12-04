@@ -45,6 +45,7 @@ VSCode/Cursor is the recommended code editor for this project. The extensions be
 - [Buf](https://marketplace.visualstudio.com/items?itemName=bufbuild.vscode-buf)
 - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 - [TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml)
+- [Github Actions](https://marketplace.visualstudio.com/items?itemName=github.vscode-github-actions)
 
 ## Obsidian Setup
 
