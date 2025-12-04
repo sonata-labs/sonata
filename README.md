@@ -6,44 +6,46 @@
 
 The protocol for open audio distribution.
 
-## Development
-
-### Prerequisites
-
-Install dependencies:
+## Single Node Development Setup
 
 ```bash
-make deps
+# install sonata cli
+go install github.com/sonata-labs/sonata/cmd/sonata@latest
+go install github.com/air-verse/air@latest
+
+# initialize a local node to a local dir
+sonata init --home=./tmp/sonata-dev
+
+# start dev node using local dir
+air -- run --home ./tmp/sonata-dev
 ```
 
-This installs [buf](https://buf.build/) for protobuf generation and [air](https://github.com/air-verse/air) for hot reloading.
+## Code Generation
 
-### Running
+```bash 
+# install buf
+go install github.com/bufbuild/buf/cmd/buf@latest
 
-Run the node:
+# generate code
+buf generate
 
+# tidy up
+go mod tidy
+```
+
+To clean up the generatedcode, run:
 ```bash
-./sonata run --home ./tmp/test-init
+rm -rf gen
 ```
 
-### Hot Reloading
+## VSCode/Cursor Setup
 
-For development with automatic rebuilds on file changes:
+VSCode/Cursor is the recommended code editor for this project. The extensions below are recommended:
+- [Go](https://marketplace.visualstudio.com/items?itemName=golang.go)
+- [Buf](https://marketplace.visualstudio.com/items?itemName=bufbuild.vscode-buf)
+- [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+- [TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml)
 
-```bash
-air -- run --home ./tmp/test-init
-```
+## Obsidian Setup
 
-Air watches for changes to `.go`, `.toml`, and `.proto` files and automatically rebuilds and restarts the node.
-
-### Initializing a Node
-
-```bash
-./sonata init --home ./tmp/test-init
-```
-
-### Generating Protobuf
-
-```bash
-make gen
-```
+Obsidian is the recommended tool for managing documentation and notes. Open this project as a vault and navigate to the `docs` folder to view the documentation.
