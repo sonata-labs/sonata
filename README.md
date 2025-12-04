@@ -33,7 +33,7 @@ buf generate
 go mod tidy
 ```
 
-To clean up the generatedcode, run:
+To clean up the generated code, run:
 ```bash
 rm -rf gen
 ```
