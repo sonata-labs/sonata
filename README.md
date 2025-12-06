@@ -47,6 +47,6 @@ VSCode/Cursor is the recommended code editor for this project. The extensions be
 - [TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml)
 - [Github Actions](https://marketplace.visualstudio.com/items?itemName=github.vscode-github-actions)
 
-## Obsidian Setup
+## Documentation
 
-Obsidian is the recommended tool for managing documentation and notes. Open this project as a vault and navigate to the `docs` folder to view the documentation.
+Documentation is stored in the `docs` folder. It is a vocs site.

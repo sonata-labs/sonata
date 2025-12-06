@@ -1,1 +1,0 @@
-The sonata chain has a native token for accounting measures. This can be minted by the bonded token that a sonata chain has attached to it and also burned back out. 
